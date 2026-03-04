@@ -1,5 +1,5 @@
 // Basic cache-first for static assets, network-first for API
-const CACHE_NAME = "golf-pwa-v1";
+const CACHE_NAME = "golf-pwa-v3-1";
 const ASSETS = [
   "./",
   "./index.html",

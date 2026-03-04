@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#0f172a" />
+  <meta name="theme-color" content="#064e3b" />
   <title>球隊資訊查詢</title>
 
   <!-- PWA -->
@@ -23,18 +23,18 @@
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-100 min-h-screen">
+<body class="bg-emerald-950 text-emerald-50 min-h-screen">
   <!-- Top bar -->
-  <header class="safe-top sticky top-0 z-40 bg-slate-950/80 backdrop-blur border-b border-slate-800">
+  <header class="safe-top sticky top-0 z-40 bg-emerald-950/80 backdrop-blur border-b border-emerald-900">
     <div class="max-w-md mx-auto px-4 py-3 flex items-center gap-3">
       <div class="h-9 w-9 rounded-2xl bg-emerald-500/15 border border-emerald-400/20 flex items-center justify-center">
         <span class="text-emerald-300 font-bold">⛳</span>
       </div>
       <div class="flex-1">
         <div class="text-base font-semibold leading-tight">球隊資訊查詢</div>
-        <div id="subtitle" class="text-xs text-slate-400">請先登入</div>
+        <div id="subtitle" class="text-xs text-emerald-200/70">請先登入</div>
       </div>
-      <button id="btnLogout" class="hidden text-sm px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700">
+      <button id="btnLogout" class="hidden text-sm px-3 py-2 rounded-xl bg-emerald-900/60 hover:bg-emerald-900/80 border border-emerald-800/60">
         登出
       </button>
     </div>
@@ -44,43 +44,51 @@
   <main class="max-w-md mx-auto px-4 py-5 safe-bottom">
     <!-- Login view -->
     <section id="viewLogin" class="">
-      <div class="mt-2 rounded-3xl border border-slate-800 bg-slate-900/40 p-5 shadow-sm">
+      <div class="mt-2 rounded-3xl border border-emerald-900 bg-emerald-900/30 p-5 shadow-sm">
         <h1 class="text-lg font-semibold">登入</h1>
-        <p class="text-sm text-slate-400 mt-1">輸入球隊密碼與姓名（需存在於「會員總表」的姓名欄）</p>
+        <div class="mt-3 rounded-2xl bg-emerald-950/40 border border-emerald-900 p-4">
+          <div class="text-base font-semibold">~ 工研院快樂隊 ~</div>
+          <div class="mt-1 text-sm text-emerald-100/80 leading-relaxed">
+            歡迎對高爾夫球有熱誠，<br>
+            遵守高爾夫規則，<br>
+            發揮高爾夫精神的球友參加
+          </div>
+        </div>
+        <p class="text-sm text-emerald-200/70 mt-1">輸入球隊密碼與姓名（需存在於「會員總表」的姓名欄）</p>
 
         <div class="mt-4 space-y-3">
           <div>
-            <label class="text-xs text-slate-400">球隊密碼</label>
+            <label class="text-xs text-emerald-200/70">球隊密碼</label>
             <input id="teamPwd" type="password" inputmode="text" autocomplete="current-password"
-              class="mt-1 w-full rounded-2xl bg-slate-950/40 border border-slate-800 px-4 py-3 text-base outline-none focus:ring-2 focus:ring-emerald-500/30"
+              class="mt-1 w-full rounded-2xl bg-emerald-950/40 border border-emerald-900 px-4 py-3 text-base outline-none focus:ring-2 focus:ring-emerald-500/30"
               placeholder="輸入球隊密碼">
           </div>
 
           <div>
-            <label class="text-xs text-slate-400">姓名</label>
+            <label class="text-xs text-emerald-200/70">姓名</label>
             <input id="memberName" type="text" inputmode="text" autocomplete="name"
-              class="mt-1 w-full rounded-2xl bg-slate-950/40 border border-slate-800 px-4 py-3 text-base outline-none focus:ring-2 focus:ring-emerald-500/30"
+              class="mt-1 w-full rounded-2xl bg-emerald-950/40 border border-emerald-900 px-4 py-3 text-base outline-none focus:ring-2 focus:ring-emerald-500/30"
               placeholder="例：王小明">
           </div>
 
           <button id="btnLogin"
-            class="w-full rounded-2xl bg-emerald-500 text-slate-950 font-semibold py-3 hover:bg-emerald-400 active:bg-emerald-600 transition">
+            class="w-full rounded-2xl bg-emerald-500 text-emerald-950 font-semibold py-3 hover:bg-emerald-400 active:bg-emerald-600 transition">
             進入
           </button>
 
           <div id="loginMsg" class="text-sm text-rose-300 hidden"></div>
 
-          <div class="text-xs text-slate-500 leading-relaxed">
-            提醒：不採用個別帳號登入的前提下，屬於「知道球隊密碼的人可查閱」的門檻式保護。建議球隊密碼定期更換。
+          <div class="text-xs text-emerald-200/50 leading-relaxed">
+            📱 建議將本頁加入主畫面（像 App 一樣使用）<br>iPhone：分享 → 加入主畫面<br>Android：瀏覽器選單 → 安裝應用程式<br><br>提醒：不採用個別帳號登入的前提下，屬於「知道球隊密碼的人可查閱」的門檻式保護。建議球隊密碼定期更換。
           </div>
         </div>
       </div>
 
-      <div class="mt-4 text-xs text-slate-500">
-        <div class="font-semibold text-slate-400 mb-1">管理者設定（你要做一次）</div>
+      <div class="mt-4 text-xs text-emerald-200/50">
+        <div class="font-semibold text-emerald-200/70 mb-1">管理者設定（你要做一次）</div>
         <ol class="list-decimal pl-5 space-y-1">
           <li>在 Google 試算表：擴充功能 → Apps Script → 部署為「網路應用程式」。</li>
-          <li>將部署後網址貼到 <span class="text-slate-300">config.js</span> 的 API_BASE。</li>
+          <li>將部署後網址貼到 <span class="text-emerald-100">config.js</span> 的 API_BASE。</li>
           <li>把此網站放到 GitHub Pages / Cloudflare Pages / 任何靜態空間。</li>
         </ol>
       </div>
@@ -90,25 +98,25 @@
     <section id="viewApp" class="hidden">
       <!-- Quick actions -->
       <div class="grid grid-cols-2 gap-3 mt-2">
-        <a href="#/members" class="rounded-3xl border border-slate-800 bg-slate-900/40 p-4 hover:bg-slate-900/60 transition">
-          <div class="text-xs text-slate-400">會員戰績表</div>
+        <a href="#/members" class="rounded-3xl border border-emerald-900 bg-emerald-900/30 p-4 hover:bg-emerald-900/40 transition">
+          <div class="text-xs text-emerald-200/70">會員戰績表</div>
           <div class="mt-1 text-base font-semibold">查會員</div>
-          <div class="mt-2 text-xs text-slate-500">基本資料 / 當年比賽紀錄</div>
+          <div class="mt-2 text-xs text-emerald-200/50">基本資料 / 當年比賽紀錄</div>
         </a>
-        <a href="#/monthly" class="rounded-3xl border border-slate-800 bg-slate-900/40 p-4 hover:bg-slate-900/60 transition">
-          <div class="text-xs text-slate-400">賽事龍虎榜</div>
+        <a href="#/monthly" class="rounded-3xl border border-emerald-900 bg-emerald-900/30 p-4 hover:bg-emerald-900/40 transition">
+          <div class="text-xs text-emerald-200/70">賽事龍虎榜</div>
           <div class="mt-1 text-base font-semibold">看月例賽</div>
-          <div class="mt-2 text-xs text-slate-500">1~12 月例賽排行</div>
+          <div class="mt-2 text-xs text-emerald-200/50">1~12 月例賽排行</div>
         </a>
-        <a href="#/annual" class="rounded-3xl border border-slate-800 bg-slate-900/40 p-4 hover:bg-slate-900/60 transition">
-          <div class="text-xs text-slate-400">年度風雲錄</div>
+        <a href="#/annual" class="rounded-3xl border border-emerald-900 bg-emerald-900/30 p-4 hover:bg-emerald-900/40 transition">
+          <div class="text-xs text-emerald-200/70">年度風雲錄</div>
           <div class="mt-1 text-base font-semibold">看年度榜</div>
-          <div class="mt-2 text-xs text-slate-500">年度積分/獎項</div>
+          <div class="mt-2 text-xs text-emerald-200/50">年度積分/獎項</div>
         </a>
-        <a href="#/finance" class="rounded-3xl border border-slate-800 bg-slate-900/40 p-4 hover:bg-slate-900/60 transition">
-          <div class="text-xs text-slate-400">快樂財經閣</div>
+        <a href="#/finance" class="rounded-3xl border border-emerald-900 bg-emerald-900/30 p-4 hover:bg-emerald-900/40 transition">
+          <div class="text-xs text-emerald-200/70">快樂財經閣</div>
           <div class="mt-1 text-base font-semibold">看財務</div>
-          <div class="mt-2 text-xs text-slate-500">財務報表 + 隊球結餘</div>
+          <div class="mt-2 text-xs text-emerald-200/50">財務報表 + 隊球結餘</div>
         </a>
       </div>
 
@@ -118,12 +126,12 @@
   </main>
 
   <!-- Bottom nav -->
-  <nav id="bottomNav" class="hidden fixed bottom-0 left-0 right-0 safe-bottom bg-slate-950/90 backdrop-blur border-t border-slate-800">
+  <nav id="bottomNav" class="hidden fixed bottom-0 left-0 right-0 safe-bottom bg-emerald-950/90 backdrop-blur border-t border-emerald-900">
     <div class="max-w-md mx-auto px-4 py-2 grid grid-cols-4 gap-2 text-xs">
-      <a class="navitem text-slate-300 py-2 rounded-xl text-center hover:bg-slate-900" href="#/home">首頁</a>
-      <a class="navitem text-slate-300 py-2 rounded-xl text-center hover:bg-slate-900" href="#/members">會員</a>
-      <a class="navitem text-slate-300 py-2 rounded-xl text-center hover:bg-slate-900" href="#/monthly">月例賽</a>
-      <a class="navitem text-slate-300 py-2 rounded-xl text-center hover:bg-slate-900" href="#/finance">財經</a>
+      <a class="navitem text-emerald-100 py-2 rounded-xl text-center hover:bg-emerald-950/60" href="#/home">首頁</a>
+      <a class="navitem text-emerald-100 py-2 rounded-xl text-center hover:bg-emerald-950/60" href="#/members">會員</a>
+      <a class="navitem text-emerald-100 py-2 rounded-xl text-center hover:bg-emerald-950/60" href="#/monthly">月例賽</a>
+      <a class="navitem text-emerald-100 py-2 rounded-xl text-center hover:bg-emerald-950/60" href="#/finance">財經</a>
     </div>
   </nav>
 
@@ -185,12 +193,12 @@
     // ---------- Routes ----------
     function pageWrapper(title, subtitle, innerHtml){
       return `
-        <div class="rounded-3xl border border-slate-800 bg-slate-900/40 p-5 shadow-sm">
+        <div class="rounded-3xl border border-emerald-900 bg-emerald-900/30 p-5 shadow-sm">
           <div class="flex items-start gap-3">
-            <div class="h-10 w-10 rounded-2xl bg-slate-800 flex items-center justify-center">📌</div>
+            <div class="h-10 w-10 rounded-2xl bg-emerald-900/60 flex items-center justify-center">📌</div>
             <div class="flex-1">
               <div class="text-lg font-semibold">${title}</div>
-              <div class="text-xs text-slate-400 mt-1">${subtitle || ""}</div>
+              <div class="text-xs text-emerald-200/70 mt-1">${subtitle || ""}</div>
             </div>
           </div>
           <div class="mt-4">${innerHtml}</div>
@@ -199,20 +207,108 @@
     }
 
     async function routeHome(){
-      $("routeOutlet").innerHTML = pageWrapper(
-        "首頁",
-        "請從上方四個卡片或下方選單進入功能",
-        `<div class="text-sm text-slate-300 leading-relaxed">
-           小提醒：你可以把此網站「加入主畫面」當作 App 使用（iPhone：分享→加入主畫面；Android：瀏覽器選單→安裝應用程式）。
-         </div>`
-      );
+      // Home = Member overview cards
+      await routeMembers(true);
     }
 
-    async function routeMembers(){
+    async function routeMembers(isHome=false){
+      const { team, name } = getSession();
+      const title = "首頁";
+      const sub = "所有會員總覽（點卡片看個人資料）";
+
+      $("routeOutlet").innerHTML = pageWrapper(
+        title,
+        sub,
+        `
+          <div class="flex items-center justify-between gap-2">
+            <div class="text-sm text-emerald-100/80">目前登入：<span class="font-semibold text-emerald-50">${escapeHtml(name||"")}</span></div>
+            <div class="flex items-center gap-2">
+              <button id="btnLogout" class="text-xs px-3 py-2 rounded-xl bg-emerald-950/40 hover:bg-emerald-950/60 border border-emerald-800/60">登出</button>
+              <a href="#/home" class="text-xs px-3 py-2 rounded-xl bg-emerald-900/50 hover:bg-emerald-900/70 border border-emerald-800/60">重新整理</a>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <input id="memberSearch" placeholder="搜尋姓名" class="w-full rounded-2xl bg-emerald-950/40 border border-emerald-900 px-4 py-3 text-base outline-none focus:ring-2 focus:ring-emerald-400/30" />
+          </div>
+
+          <div id="memberGrid" class="mt-4 grid grid-cols-2 gap-3"></div>
+          <div id="memberEmpty" class="mt-3 text-sm text-emerald-200/70 hidden">（查無資料）</div>
+        `
+      );
+
+      const grid = $("memberGrid");
+      const empty = $("memberEmpty");
+      const search = $("memberSearch");
+
+      function render(list){
+        grid.innerHTML = "";
+        if (!list.length){
+          empty.classList.remove("hidden");
+          return;
+        }
+        empty.classList.add("hidden");
+        list.forEach(m=>{
+          const tag = (String(m["樂齡"]||"").trim().toUpperCase()==="Y") ? 
+            `<span class="text-xs px-2 py-1 rounded-full bg-emerald-400/20 border border-emerald-300/20 text-emerald-100">樂齡</span>` :
+            `<span class="text-xs px-2 py-1 rounded-full bg-emerald-950/50 border border-emerald-900 text-emerald-200/70">一般</span>`;
+          const identity = escapeHtml(m["身份"] || "");
+          const hcp = escapeHtml(m["最新差點"] || "—");
+          grid.insertAdjacentHTML("beforeend", `
+            <button class="text-left rounded-3xl border border-emerald-900 bg-emerald-900/25 p-4 hover:bg-emerald-900/35 transition" data-name="${escapeHtml(m["姓名"]||"")}">
+              <div class="flex items-start justify-between gap-2">
+                <div class="text-base font-semibold">${escapeHtml(m["姓名"]||"")}</div>
+                ${tag}
+              </div>
+              <div class="mt-2 text-xs text-emerald-200/70">${identity}</div>
+              <div class="mt-3 text-sm text-emerald-100/90">差點：<span class="font-semibold">${hcp}</span></div>
+            </button>
+          `);
+        });
+
+        grid.querySelectorAll("button[data-name]").forEach(btn=>{
+          btn.addEventListener("click", ()=>{
+            const nm = btn.getAttribute("data-name");
+            window.location.hash = "#/member/" + encodeURIComponent(nm);
+          });
+        });
+      }
+
+      try{
+        const json = await apiGet({ action:"members", team });
+        if (!json.ok) throw new Error(json.error || "unknown");
+        const members = json.members || [];
+        render(members);
+
+        const btnLogout = document.getElementById('btnLogout');
+        if (btnLogout){
+          btnLogout.addEventListener('click', ()=>{
+            if (!confirm('確定要登出嗎？')) return;
+            clearSession();
+            window.location.hash = '#/login';
+          });
+        }
+
+        search.addEventListener("input", ()=>{
+          const q = (search.value||"").trim();
+          const filtered = !q ? members : members.filter(m => String(m["姓名"]||"").includes(q));
+          render(filtered);
+        });
+      }catch(err){
+        grid.innerHTML = `
+          <div class="col-span-2 rounded-2xl border border-emerald-900 bg-emerald-950/40 p-4">
+            <div class="text-sm text-rose-200">讀取失敗：${escapeHtml(String(err.message||err))}</div>
+            <div class="mt-2 text-xs text-emerald-200/60">請確認 Apps Script 已新增 action=members，且「會員總表」標題列在第 2 列。</div>
+          </div>
+        `;
+      }
+    }
+
+(){
       $("routeOutlet").innerHTML = pageWrapper(
         "會員戰績表",
         "（下一步我會幫你把：搜尋會員 → 個人卡片 → 今年成績摘要做完整）",
-        `<div class="text-sm text-slate-300">
+        `<div class="text-sm text-emerald-100">
            目前先完成整體架構與登入流程；功能頁面可逐一補齊。
          </div>`
       );
@@ -227,11 +323,11 @@
         "選擇月份查看月例賽榜單（前 3 名＋其他獎項）",
         `
           <div class="flex gap-2 overflow-x-auto pb-2">
-            ${Array.from({length:12},(_,i)=>`<button data-m="${i+1}" class="monthbtn px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 whitespace-nowrap">${i+1}月</button>`).join("")}
+            ${Array.from({length:12},(_,i)=>`<button data-m="${i+1}" class="monthbtn px-3 py-2 rounded-xl bg-emerald-900/60 hover:bg-emerald-900/80 border border-emerald-800/60 whitespace-nowrap">${i+1}月</button>`).join("")}
           </div>
 
           <div id="monthlyBody" class="mt-4">
-            <div class="text-sm text-slate-400">請先選擇月份</div>
+            <div class="text-sm text-emerald-200/70">請先選擇月份</div>
           </div>
         `
       );
@@ -239,7 +335,7 @@
       const body = $("monthlyBody");
 
       async function loadMonth(m){
-        body.innerHTML = `<div class="text-sm text-slate-400">讀取 ${m} 月榜單中…</div>`;
+        body.innerHTML = `<div class="text-sm text-emerald-200/70">讀取 ${m} 月榜單中…</div>`;
         try{
           const json = await apiGet({ action:"monthly", team, month: String(m) });
           if (!json.ok) throw new Error(json.error || "unknown");
@@ -253,16 +349,16 @@
           const podiumHtml = podium.length ? `
             <div class="grid grid-cols-1 gap-3">
               ${podium.map((p, idx)=>`
-                <div class="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
+                <div class="rounded-2xl border border-emerald-900 bg-emerald-950/40 p-4">
                   <div class="flex items-center justify-between">
-                    <div class="text-xs text-slate-400">${escapeHtml(p.category)}</div>
+                    <div class="text-xs text-emerald-200/70">${escapeHtml(p.category)}</div>
                     <div class="text-xs px-2 py-1 rounded-lg bg-emerald-500/15 border border-emerald-400/20 text-emerald-200">TOP ${idx+1}</div>
                   </div>
                   <div class="mt-2 text-xl font-bold">${escapeHtml(p.name || "—")}</div>
                   <div class="mt-3 grid grid-cols-2 gap-2 text-sm">
                     ${(statLabels || []).map((lab, i)=>`
-                      <div class="rounded-xl bg-slate-900/40 border border-slate-800 px-3 py-2">
-                        <div class="text-xs text-slate-400">${escapeHtml(lab)}</div>
+                      <div class="rounded-xl bg-emerald-900/30 border border-emerald-900 px-3 py-2">
+                        <div class="text-xs text-emerald-200/70">${escapeHtml(lab)}</div>
                         <div class="mt-1 font-semibold">${escapeHtml((p.stats && p.stats[i] != null) ? p.stats[i] : "—")}</div>
                       </div>
                     `).join("")}
@@ -275,18 +371,18 @@
           // Other stat-based awards (Lucky 7 / BB etc)
           const otherStats = (statWinners || []).filter(x => !podiumPlaces.includes(x.category));
           const otherStatsHtml = otherStats.length ? `
-            <div class="mt-4 rounded-3xl border border-slate-800 bg-slate-950/30 p-4">
+            <div class="mt-4 rounded-3xl border border-emerald-900 bg-emerald-950/30 p-4">
               <div class="text-sm font-semibold">其他獎項</div>
               <div class="mt-3 space-y-3">
                 ${otherStats.map(p=>`
-                  <div class="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
-                    <div class="text-xs text-slate-400">${escapeHtml(p.category)}</div>
+                  <div class="rounded-2xl border border-emerald-900 bg-emerald-950/40 p-4">
+                    <div class="text-xs text-emerald-200/70">${escapeHtml(p.category)}</div>
                     <div class="mt-1 text-lg font-bold">${escapeHtml(p.name || "—")}</div>
                     ${(statLabels || []).length ? `
                       <div class="mt-3 grid grid-cols-2 gap-2 text-sm">
                         ${(statLabels || []).map((lab, i)=>`
-                          <div class="rounded-xl bg-slate-900/40 border border-slate-800 px-3 py-2">
-                            <div class="text-xs text-slate-400">${escapeHtml(lab)}</div>
+                          <div class="rounded-xl bg-emerald-900/30 border border-emerald-900 px-3 py-2">
+                            <div class="text-xs text-emerald-200/70">${escapeHtml(lab)}</div>
                             <div class="mt-1 font-semibold">${escapeHtml((p.stats && p.stats[i] != null) ? p.stats[i] : "—")}</div>
                           </div>
                         `).join("")}
@@ -301,16 +397,16 @@
           // List-based awards (哈哈/近洞/二近 etc)
           const listCats = Object.keys(listWinners || {});
           const listHtml = listCats.length ? `
-            <div class="mt-4 rounded-3xl border border-slate-800 bg-slate-950/30 p-4">
+            <div class="mt-4 rounded-3xl border border-emerald-900 bg-emerald-950/30 p-4">
               <div class="text-sm font-semibold">名單類獎項</div>
               <div class="mt-3 space-y-4">
                 ${listCats.map(cat=>{
                   const arr = listWinners[cat] || [];
                   return `
                     <div>
-                      <div class="text-xs text-slate-400">${escapeHtml(cat)}</div>
+                      <div class="text-xs text-emerald-200/70">${escapeHtml(cat)}</div>
                       <div class="mt-2 flex flex-wrap gap-2">
-                        ${arr.length ? arr.map(n=>`<span class="text-sm px-3 py-1 rounded-full bg-slate-900/60 border border-slate-800">${escapeHtml(n)}</span>`).join("") : `<span class="text-sm text-slate-500">—</span>`}
+                        ${arr.length ? arr.map(n=>`<span class="text-sm px-3 py-1 rounded-full bg-emerald-900/40 border border-emerald-900">${escapeHtml(n)}</span>`).join("") : `<span class="text-sm text-emerald-200/50">—</span>`}
                       </div>
                     </div>
                   `;
@@ -320,17 +416,17 @@
           ` : "";
 
           body.innerHTML = `
-            <div class="text-xs text-slate-400">${escapeHtml(title || `${m}月榜單`)}</div>
-            ${podiumHtml || `<div class="mt-3 text-sm text-slate-400">（本月未設定冠亞季或資料為空）</div>`}
+            <div class="text-xs text-emerald-200/70">${escapeHtml(title || `${m}月榜單`)}</div>
+            ${podiumHtml || `<div class="mt-3 text-sm text-emerald-200/70">（本月未設定冠亞季或資料為空）</div>`}
             ${otherStatsHtml}
             ${listHtml}
           `;
 
         }catch(err){
           body.innerHTML = `
-            <div class="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
+            <div class="rounded-2xl border border-emerald-900 bg-emerald-950/40 p-4">
               <div class="text-sm text-rose-300">讀取失敗：${escapeHtml(String(err.message || err))}</div>
-              <div class="mt-2 text-xs text-slate-500">請確認 Apps Script 已新增 action=monthly，且試算表中有「${m}月榜單」分頁。</div>
+              <div class="mt-2 text-xs text-emerald-200/50">請確認 Apps Script 已新增 action=monthly，且試算表中有「${m}月榜單」分頁。</div>
             </div>
           `;
         }
@@ -339,8 +435,8 @@
       // bind buttons
       document.querySelectorAll(".monthbtn").forEach(btn=>{
         btn.addEventListener("click", ()=>{
-          document.querySelectorAll(".monthbtn").forEach(b=>b.classList.remove("bg-emerald-500","text-slate-950","border-emerald-400"));
-          btn.classList.add("bg-emerald-500","text-slate-950","border-emerald-400");
+          document.querySelectorAll(".monthbtn").forEach(b=>b.classList.remove("bg-emerald-500","text-emerald-950","border-emerald-400"));
+          btn.classList.add("bg-emerald-500","text-emerald-950","border-emerald-400");
           loadMonth(btn.dataset.m);
         });
       });
@@ -356,7 +452,7 @@
       $("routeOutlet").innerHTML = pageWrapper(
         "年度風雲錄",
         "（下一步我會把 年度成績 做成：排行榜 + 獎項徽章）",
-        `<div class="text-sm text-slate-300">
+        `<div class="text-sm text-emerald-100">
            會用「卡片」方式呈現，不會直接丟表格給手機。
          </div>`
       );
@@ -394,7 +490,7 @@
 
     async function routeFinance(){
       const { team } = getSession();
-      $("routeOutlet").innerHTML = pageWrapper("快樂財經閣", "讀取中…", `<div class="text-sm text-slate-400">Loading…</div>`);
+      $("routeOutlet").innerHTML = pageWrapper("快樂財經閣", "讀取中…", `<div class="text-sm text-emerald-200/70">Loading…</div>`);
 
       try{
         const json = await apiGet({ action: "finance", team });
@@ -411,15 +507,15 @@
 
         const cards = `
           <div class="grid grid-cols-2 gap-3">
-            <div class="rounded-2xl bg-slate-950/40 border border-slate-800 p-4">
-              <div class="text-xs text-slate-400">最新結餘 ${monthText}</div>
+            <div class="rounded-2xl bg-emerald-950/40 border border-emerald-900 p-4">
+              <div class="text-xs text-emerald-200/70">最新結餘 ${monthText}</div>
               <div class="mt-2 text-2xl font-bold">${balanceText}</div>
-              <div class="mt-1 text-xs text-slate-500">來自「財務報表」的結餘列</div>
+              <div class="mt-1 text-xs text-emerald-200/50">來自「財務報表」的結餘列</div>
             </div>
-            <div class="rounded-2xl bg-slate-950/40 border border-slate-800 p-4">
-              <div class="text-xs text-slate-400">隊球結餘</div>
+            <div class="rounded-2xl bg-emerald-950/40 border border-emerald-900 p-4">
+              <div class="text-xs text-emerald-200/70">隊球結餘</div>
               <div class="mt-2 text-2xl font-bold">${ballText}</div>
-              <div class="mt-1 text-xs text-slate-500">來自「隊球庫存」的結餘欄</div>
+              <div class="mt-1 text-xs text-emerald-200/50">來自「隊球庫存」的結餘欄</div>
             </div>
           </div>
         `;
@@ -434,15 +530,15 @@
             <div class="mt-4">
               <div class="flex items-center justify-between">
                 <div class="text-sm font-semibold">財務報表</div>
-                <button id="btnToggleFin" class="text-xs px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700">
+                <button id="btnToggleFin" class="text-xs px-3 py-2 rounded-xl bg-emerald-900/60 hover:bg-emerald-900/80 border border-emerald-800/60">
                   展開/收合
                 </button>
               </div>
               <div id="finWrap" class="mt-3 hidden">
-                <div class="hscroll overflow-x-auto rounded-2xl border border-slate-800 bg-slate-950/30">
+                <div class="hscroll overflow-x-auto rounded-2xl border border-emerald-900 bg-emerald-950/30">
                   ${tableHtml}
                 </div>
-                <div class="text-xs text-slate-500 mt-2">表格可左右滑動；我也可以把它改成「月份切換 + 科目卡片」更適合手機。</div>
+                <div class="text-xs text-emerald-200/50 mt-2">表格可左右滑動；我也可以把它改成「月份切換 + 科目卡片」更適合手機。</div>
               </div>
             </div>
           `
@@ -458,7 +554,7 @@
           "讀取失敗",
           `<div class="text-sm text-rose-300">
              無法取得資料：${String(err.message || err)}
-             <div class="mt-2 text-xs text-slate-500">請確認 Apps Script 已部署為網路應用程式，且 config.js 的 API_BASE 正確。</div>
+             <div class="mt-2 text-xs text-emerald-200/50">請確認 Apps Script 已部署為網路應用程式，且 config.js 的 API_BASE 正確。</div>
            </div>`
         );
       }
@@ -471,28 +567,115 @@
     }
 
     function renderMatrixTable(values){
-      if (!values || values.length === 0) return `<div class="p-4 text-sm text-slate-400">（沒有資料）</div>`;
+      if (!values || values.length === 0) return `<div class="p-4 text-sm text-emerald-200/70">（沒有資料）</div>`;
       const rows = values.map(r => r.map(escapeHtml));
       const thead = rows[0];
       const body = rows.slice(1);
 
       let html = `<table class="min-w-full text-sm text-slate-200">`;
-      html += `<thead class="bg-slate-900/50">`;
+      html += `<thead class="bg-emerald-900/30">`;
       html += `<tr>`;
       thead.forEach((h, i)=>{
-        html += `<th class="px-3 py-2 whitespace-nowrap ${i===0 ? "sticky left-0 bg-slate-900/80 backdrop-blur border-r border-slate-800" : ""}">${h}</th>`;
+        html += `<th class="px-3 py-2 whitespace-nowrap ${i===0 ? "sticky left-0 bg-slate-900/80 backdrop-blur border-r border-emerald-900" : ""}">${h}</th>`;
       });
       html += `</tr></thead><tbody>`;
       body.forEach(row=>{
-        html += `<tr class="border-t border-slate-800/70">`;
+        html += `<tr class="border-t border-emerald-900/70">`;
         row.forEach((c, i)=>{
-          html += `<td class="px-3 py-2 whitespace-nowrap ${i===0 ? "sticky left-0 bg-slate-950/60 backdrop-blur border-r border-slate-800 font-semibold" : ""}">${c}</td>`;
+          html += `<td class="px-3 py-2 whitespace-nowrap ${i===0 ? "sticky left-0 bg-emerald-950/60 backdrop-blur border-r border-emerald-900 font-semibold" : ""}">${c}</td>`;
         });
         html += `</tr>`;
       });
       html += `</tbody></table>`;
       return html;
     }
+
+    
+    async function routeMemberDetail(memberName){
+      const { team } = getSession();
+      $("routeOutlet").innerHTML = pageWrapper("會員戰績表", "讀取中…", `<div class="text-sm text-emerald-200/70">Loading…</div>`);
+      try{
+        const json = await apiGet({ action:"member", team, name: memberName });
+        if (!json.ok) throw new Error(json.error || "unknown");
+        const m = json.member || {};
+
+        const isSenior = String(m["樂齡"]||"").trim().toUpperCase()==="Y";
+        const seniorLabel = isSenior ? "樂齡/一般　樂齡" : "樂齡/標準　一般";
+
+        const stats = [
+          ["年度積分", m["年度積分"]],
+          ["參賽", m["參賽"]],
+          ["今年遠距獎次數", m["遠距獎"]],
+          ["今年Eagle次數", m["獵鷹"]],
+          ["今年Birdie次數", m["抓鳥"]],
+        ];
+
+        const fees = [
+          ["總繳健身費", m["總繳健身費"]],
+          ["累計健身費", m["累計健身費"]],
+        ];
+
+        $("routeOutlet").innerHTML = `
+          <div class="rounded-3xl border border-emerald-900 bg-emerald-900/25 p-5 shadow-sm">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <div class="text-lg font-semibold">${escapeHtml(m["姓名"]||memberName)}</div>
+                <div class="mt-1 text-xs text-emerald-200/70">${escapeHtml(m["身份"]||"")}</div>
+              </div>
+              <a href="#/home" class="text-xs px-3 py-2 rounded-xl bg-emerald-900/50 hover:bg-emerald-900/70 border border-emerald-800/60">返回</a>
+            </div>
+
+            <div class="mt-4 grid grid-cols-2 gap-3">
+              <div class="rounded-2xl bg-emerald-950/35 border border-emerald-900 p-4">
+                <div class="text-xs text-emerald-200/70">最新差點</div>
+                <div class="mt-2 text-3xl font-bold">${escapeHtml(m["最新差點"]||"—")}</div>
+                <div class="mt-2 text-xs text-emerald-200/60">初始差點：${escapeHtml(m["初始差點"]||"—")}</div>
+              </div>
+              <div class="rounded-2xl bg-emerald-950/35 border border-emerald-900 p-4">
+                <div class="text-xs text-emerald-200/70">基本資料</div>
+                <div class="mt-2 text-sm text-emerald-50">性別：<span class="font-semibold">${escapeHtml(m["性別"]||"—")}</span></div>
+                <div class="mt-1 text-sm text-emerald-50">${escapeHtml(seniorLabel)}</div>
+              </div>
+            </div>
+
+            <div class="mt-4 rounded-3xl border border-emerald-900 bg-emerald-950/25 p-4">
+              <div class="text-sm font-semibold">年度戰績</div>
+              <div class="mt-3 grid grid-cols-2 gap-3">
+                ${stats.map(([k,v])=>`
+                  <div class="rounded-2xl bg-emerald-950/35 border border-emerald-900 p-4">
+                    <div class="text-xs text-emerald-200/70">${escapeHtml(k)}</div>
+                    <div class="mt-2 text-xl font-bold">${escapeHtml(v ?? "—")}</div>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
+
+            <div class="mt-4 rounded-3xl border border-emerald-900 bg-emerald-950/25 p-4">
+              <div class="text-sm font-semibold">健身費</div>
+              <div class="mt-3 grid grid-cols-2 gap-3">
+                ${fees.map(([k,v])=>`
+                  <div class="rounded-2xl bg-emerald-950/35 border border-emerald-900 p-4">
+                    <div class="text-xs text-emerald-200/70">${escapeHtml(k)}</div>
+                    <div class="mt-2 text-xl font-bold">${escapeHtml(v ?? "—")}</div>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
+
+            <div class="mt-4 text-xs text-emerald-200/60">
+              不顯示：PIN、入會時間、繳費、別名（依你的規則）。
+            </div>
+          </div>
+        `;
+      }catch(err){
+        $("routeOutlet").innerHTML = pageWrapper(
+          "會員戰績表",
+          "讀取失敗",
+          `<div class="text-sm text-rose-200">無法取得會員資料：${escapeHtml(String(err.message||err))}</div>`
+        );
+      }
+    }
+
 
     const routes = {
       "/home": routeHome,
@@ -505,8 +688,14 @@
     async function router(){
       const hash = (window.location.hash || "#/home").replace("#","");
       const path = hash.startsWith("/") ? hash : "/home";
-      const fn = routes[path] || routeHome;
-      await fn();
+
+      if (path.startsWith("/member/")){
+        const memberName = decodeURIComponent(path.slice("/member/".length));
+        await routeMemberDetail(memberName);
+      } else {
+        const fn = routes[path] || routeHome;
+        await fn();
+      }
       // highlight nav
       document.querySelectorAll(".navitem").forEach(a=>{
         const href = (a.getAttribute("href")||"").replace("#","");

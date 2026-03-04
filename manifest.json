@@ -3,8 +3,8 @@
   "short_name": "球隊查詢",
   "start_url": "./index.html#/home",
   "display": "standalone",
-  "background_color": "#020617",
-  "theme_color": "#0f172a",
+  "background_color": "#052e16",
+  "theme_color": "#064e3b",
   "icons": [
     {
       "src": "./icons/icon-192.png",
