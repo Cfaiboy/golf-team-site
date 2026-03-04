@@ -304,15 +304,6 @@
       }
     }
 
-(){
-      $("routeOutlet").innerHTML = pageWrapper(
-        "會員戰績表",
-        "（下一步我會幫你把：搜尋會員 → 個人卡片 → 今年成績摘要做完整）",
-        `<div class="text-sm text-emerald-100">
-           目前先完成整體架構與登入流程；功能頁面可逐一補齊。
-         </div>`
-      );
-    }
 
     async function routeMonthly(){
       const { team } = getSession();
