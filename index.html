@@ -47,7 +47,7 @@
       <div class="mt-2 rounded-3xl border border-emerald-900 bg-emerald-900/30 p-5 shadow-sm">
         <h1 class="text-lg font-semibold">登入</h1>
         <div class="mt-3 rounded-2xl bg-emerald-950/40 border border-emerald-900 p-4">
-          <div class="text-base font-semibold">~ 工研院快樂隊 ~</div>
+          <div class="text-base font-semibold">~ 工研院快樂隊小宇宙 ~</div>
           <div class="mt-1 text-sm text-emerald-100/80 leading-relaxed">
             歡迎對高爾夫球有熱誠，<br>
             遵守高爾夫規則，<br>
@@ -207,39 +207,25 @@
     }
 
     async function routeHome(){
-      // Home = Member overview cards
       await routeMembers(true);
     }
 
     async function routeMembers(isHome=false){
-      const { team, name } = getSession();
-      const title = "首頁";
-      const sub = "所有會員總覽（點卡片看個人資料）";
+      const { team } = getSession();
+      const title = "會員戰績表";
+      const sub = "";
 
       $("routeOutlet").innerHTML = pageWrapper(
         title,
         sub,
         `
-          <div class="flex items-center justify-between gap-2">
-            <div class="text-sm text-emerald-100/80">目前登入：<span class="font-semibold text-emerald-50">${escapeHtml(name||"")}</span></div>
-            <div class="flex items-center gap-2">
-              <button id="btnLogout" class="text-xs px-3 py-2 rounded-xl bg-emerald-950/40 hover:bg-emerald-950/60 border border-emerald-800/60">登出</button>
-              <a href="#/home" class="text-xs px-3 py-2 rounded-xl bg-emerald-900/50 hover:bg-emerald-900/70 border border-emerald-800/60">重新整理</a>
-            </div>
-          </div>
-
-          <div class="mt-4">
-            <input id="memberSearch" placeholder="搜尋姓名" class="w-full rounded-2xl bg-emerald-950/40 border border-emerald-900 px-4 py-3 text-base outline-none focus:ring-2 focus:ring-emerald-400/30" />
-          </div>
-
-          <div id="memberGrid" class="mt-4 grid grid-cols-2 gap-3"></div>
+          <div id="memberGrid" class="mt-2 grid grid-cols-2 gap-3"></div>
           <div id="memberEmpty" class="mt-3 text-sm text-emerald-200/70 hidden">（查無資料）</div>
         `
       );
 
       const grid = $("memberGrid");
       const empty = $("memberEmpty");
-      const search = $("memberSearch");
 
       function render(list){
         grid.innerHTML = "";
@@ -248,20 +234,29 @@
           return;
         }
         empty.classList.add("hidden");
+
         list.forEach(m=>{
-          const tag = (String(m["樂齡"]||"").trim().toUpperCase()==="Y") ? 
-            `<span class="text-xs px-2 py-1 rounded-full bg-emerald-400/20 border border-emerald-300/20 text-emerald-100">樂齡</span>` :
-            `<span class="text-xs px-2 py-1 rounded-full bg-emerald-950/50 border border-emerald-900 text-emerald-200/70">一般</span>`;
-          const identity = escapeHtml(m["身份"] || "");
+          const isSenior = (String(m["樂齡"]||"").trim().toUpperCase()==="Y");
+          const bg = isSenior ? "bg-emerald-900/35 border-emerald-700/40" : "bg-sky-950/40 border-sky-800/50";
+          const tag = isSenior
+            ? `<span class="text-[11px] px-2 py-1 rounded-full bg-emerald-400/20 border border-emerald-300/20 text-emerald-100">樂齡</span>`
+            : `<span class="text-[11px] px-2 py-1 rounded-full bg-sky-400/10 border border-sky-300/10 text-sky-100/90">一般</span>`;
+          const identity = escapeHtml(m["身份"] || "會員");
           const hcp = escapeHtml(m["最新差點"] || "—");
+
           grid.insertAdjacentHTML("beforeend", `
-            <button class="text-left rounded-3xl border border-emerald-900 bg-emerald-900/25 p-4 hover:bg-emerald-900/35 transition" data-name="${escapeHtml(m["姓名"]||"")}">
+            <button class="text-left rounded-3xl border ${bg} p-4 active:scale-[0.99] transition" data-name="${escapeHtml(m["姓名"]||"")}">
               <div class="flex items-start justify-between gap-2">
-                <div class="text-base font-semibold">${escapeHtml(m["姓名"]||"")}</div>
                 ${tag}
+                <div class="text-[11px] text-emerald-100/70">${identity}</div>
               </div>
-              <div class="mt-2 text-xs text-emerald-200/70">${identity}</div>
-              <div class="mt-3 text-sm text-emerald-100/90">差點：<span class="font-semibold">${hcp}</span></div>
+
+              <div class="mt-3 text-lg font-extrabold tracking-tight text-emerald-50">${escapeHtml(m["姓名"]||"")}</div>
+
+              <div class="mt-2">
+                <div class="text-[11px] text-emerald-100/70">差點</div>
+                <div class="text-3xl font-black text-emerald-50 leading-none">${hcp}</div>
+              </div>
             </button>
           `);
         });
@@ -273,6 +268,21 @@
           });
         });
       }
+
+      try{
+        const json = await apiGet({ action:"members", team });
+        if (!json.ok) throw new Error(json.error || "unknown");
+        const members = (json.members || []).filter(x=>String(x["姓名"]||"").trim());
+        render(members);
+      }catch(err){
+        grid.innerHTML = `
+          <div class="col-span-2 rounded-2xl border border-emerald-900 bg-emerald-950/40 p-4">
+            <div class="text-sm text-rose-200">讀取失敗：${escapeHtml(String(err.message||err))}</div>
+            <div class="mt-2 text-xs text-emerald-200/60">請確認 Apps Script action=members 與試算表欄位設定。</div>
+          </div>
+        `;
+      }
+    }
 
       try{
         const json = await apiGet({ action:"members", team });
@@ -481,7 +491,16 @@
 
     async function routeFinance(){
       const { team } = getSession();
-      $("routeOutlet").innerHTML = pageWrapper("快樂財經閣", "讀取中…", `<div class="text-sm text-emerald-200/70">Loading…</div>`);
+      $("routeOutlet").innerHTML = pageWrapper("快樂財經閣", "讀取中…", `<div class="text-sm text-emerald-200/70">Loading…</div>          <div class="mt-4 rounded-3xl border border-emerald-900 bg-emerald-950/25 p-4">
+            <div class="text-sm font-semibold">球隊規則</div>
+            <div class="mt-2 text-sm text-emerald-100/80 leading-relaxed">
+              依球隊公告與「參數設定」內容為準。若有疑問，請洽總幹事。
+            </div>
+          </div>
+        `
+      );
+
+      `);
 
       try{
         const json = await apiGet({ action: "finance", team });
@@ -595,7 +614,7 @@
 
         const stats = [
           ["年度積分", m["年度積分"]],
-          ["參賽", m["參賽"]],
+          ["參賽場數", m["參賽場數"]],
           ["今年遠距獎次數", m["遠距獎"]],
           ["今年Eagle次數", m["獵鷹"]],
           ["今年Birdie次數", m["抓鳥"]],

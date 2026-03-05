@@ -1,18 +1,18 @@
 {
-  "name": "球隊資訊查詢",
-  "short_name": "球隊查詢",
+  "name": "工研院快樂隊小宇宙",
+  "short_name": "HAPPY",
   "start_url": "./index.html#/home",
   "display": "standalone",
   "background_color": "#052e16",
   "theme_color": "#064e3b",
   "icons": [
     {
-      "src": "./icons/icon-192.png",
+      "src": "icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "./icons/icon-512.png",
+      "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
