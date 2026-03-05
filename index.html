@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
+  <!-- BUILD: UI2_2 -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#064e3b" />
@@ -283,6 +284,37 @@
         `;
       }
     }
+
+      try{
+        const json = await apiGet({ action:"members", team });
+        if (!json.ok) throw new Error(json.error || "unknown");
+        const members = json.members || [];
+        render(members);
+
+        const btnLogout = document.getElementById('btnLogout');
+        if (btnLogout){
+          btnLogout.addEventListener('click', ()=>{
+            if (!confirm('確定要登出嗎？')) return;
+            clearSession();
+            window.location.hash = '#/login';
+          });
+        }
+
+        search.addEventListener("input", ()=>{
+          const q = (search.value||"").trim();
+          const filtered = !q ? members : members.filter(m => String(m["姓名"]||"").includes(q));
+          render(filtered);
+        });
+      }catch(err){
+        grid.innerHTML = `
+          <div class="col-span-2 rounded-2xl border border-emerald-900 bg-emerald-950/40 p-4">
+            <div class="text-sm text-rose-200">讀取失敗：${escapeHtml(String(err.message||err))}</div>
+            <div class="mt-2 text-xs text-emerald-200/60">請確認 Apps Script 已新增 action=members，且「會員總表」標題列在第 2 列。</div>
+          </div>
+        `;
+      }
+    }
+
 
     async function routeMonthly(){
       const { team } = getSession();
