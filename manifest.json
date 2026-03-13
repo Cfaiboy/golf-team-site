@@ -1,10 +1,10 @@
 {
   "name": "工研院快樂隊小宇宙",
   "short_name": "HAPPY",
-  "start_url": "./index.html#/home",
+  "start_url": "./",
   "display": "standalone",
-  "background_color": "#052e16",
-  "theme_color": "#064e3b",
+  "background_color": "#0b3f20",
+  "theme_color": "#0b3f20",
   "icons": [
     {
       "src": "icons/icon-192.png",

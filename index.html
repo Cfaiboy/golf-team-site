@@ -1,761 +1,669 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-  <!-- BUILD: UI2_4 -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#064e3b" />
-  <title>球隊資訊查詢</title>
-
-  <!-- PWA -->
+  <meta name="theme-color" content="#0b3f20" />
+  <title>工研院快樂隊小宇宙</title>
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
-
-  <!-- Tailwind (no build needed) -->
   <script src="https://cdn.tailwindcss.com"></script>
-
   <style>
-    /* make iOS notch safe */
-    .safe-top { padding-top: env(safe-area-inset-top); }
-    .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
-    /* subtle scrollbar for horizontal tables */
-    .hscroll::-webkit-scrollbar{height:10px}
-    .hscroll::-webkit-scrollbar-thumb{background:rgba(148,163,184,.6);border-radius:999px}
+    :root{
+      --gold:#FFD700;
+      --page:#0b3f20;
+      --panel:#144d1f;
+      --line:#45a4ff;
+      --line-green:#50ff56;
+      --blue-card:#0d486a;
+      --green-card:#1ea32d;
+      --label:#ffffff;
+    }
+    *{box-sizing:border-box}
+    body{
+      background: linear-gradient(180deg,#0a3c1f 0%, #0b5324 100%);
+      color:#fff;
+      min-height:100vh;
+      font-family:"Microsoft JhengHei UI","Microsoft JhengHei","PingFang TC","Noto Sans TC",sans-serif;
+    }
+    .safe-top{padding-top:env(safe-area-inset-top)}
+    .safe-bottom{padding-bottom:env(safe-area-inset-bottom)}
+    .app-shell{max-width:430px;margin:0 auto;min-height:100vh;position:relative}
+    .header{
+      position:sticky;top:0;z-index:30;
+      background:rgba(11,63,32,.96);
+      border-bottom:1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
+    }
+    .gold{color:var(--gold)}
+    .page-title{color:var(--gold);font-weight:800;font-size:1.95rem;line-height:1}
+    .section-title{color:var(--gold);font-weight:800;font-size:1.65rem;line-height:1.1}
+    .section-subtitle{color:#fff;opacity:.9;font-size:.95rem}
+    .panel{
+      background:rgba(22,85,28,.88);
+      border:1.5px solid rgba(255,255,255,.12);
+      border-radius:28px;
+      box-shadow:0 8px 24px rgba(0,0,0,.18) inset;
+    }
+    .pill-btn{
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.15);
+      background:rgba(255,255,255,.08);
+      color:#fff;
+      padding:.55rem .95rem;
+      font-size:.85rem;
+    }
+    .login-input{
+      width:100%;border-radius:22px;border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.14);padding:14px 16px;color:#fff;font-size:1.05rem;
+      outline:none;
+    }
+    .login-btn{
+      width:100%;border-radius:22px;background:#13d072;color:#073a1f;font-weight:800;
+      padding:14px 16px;font-size:1.12rem;
+    }
+    .member-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .member-card{
+      min-height:116px;border-radius:22px;padding:14px 14px 12px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+      display:flex;justify-content:space-between;gap:10px;align-items:stretch;
+    }
+    .member-card.blue{background:linear-gradient(180deg,#0f4e74 0%, #0b3855 100%)}
+    .member-card.green{background:linear-gradient(180deg,#33c53a 0%, #1d8f2a 100%)}
+    .member-left{display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+    .member-name{font-size:14pt;font-weight:800;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .member-name.member{color:var(--gold)}
+    .member-name.newbie{color:#fff}
+    .member-hcp{font-size:18pt;font-weight:900;line-height:1;color:var(--gold);margin-top:8px}
+    .member-right{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end}
+    .mini-label{font-size:10pt;line-height:1.1;color:#fff;white-space:nowrap}
+    .badge{
+      display:inline-flex;align-items:center;justify-content:center;min-width:52px;
+      padding:5px 10px;border-radius:999px;font-size:10pt;line-height:1;background:rgba(255,255,255,.18);color:#fff
+    }
+    .detail-wrap{
+      border-radius:26px;padding:18px;border:2px solid var(--line);background:rgba(17,86,23,.75)
+    }
+    .detail-wrap.senior{border-color:var(--line-green)}
+    .detail-name{font-size:1.95rem;font-weight:900;color:var(--gold);line-height:1}
+    .card-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .card-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .stat-card{
+      border-radius:18px;border:1.5px solid var(--line);background:rgba(0,0,0,.10);padding:12px
+    }
+    .detail-wrap.senior .stat-card{border-color:var(--line-green)}
+    .stat-title{color:#fff;font-size:1.05rem;line-height:1.15}
+    .stat-value{color:var(--gold);font-size:2rem;font-weight:900;line-height:1.05;margin-top:8px}
+    .small-value{font-size:1.65rem}
+    .subtext{color:#fff;font-size:1rem;line-height:1.35}
+    .match-card{
+      border-radius:18px;padding:12px 14px;background:linear-gradient(180deg,#f3f3db 0%, #d2df99 100%);color:#275021
+    }
+    .match-card.alt{
+      background:linear-gradient(180deg,#efefef 0%, #d7d7d0 100%);
+    }
+    .match-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+    .match-name{font-size:1.8rem;font-weight:900;color:#16a34a;line-height:1}
+    .match-rank{font-size:1.8rem;font-weight:900;color:#8b3ea9;line-height:1}
+    .score-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}
+    .score-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .score-box{background:rgba(64,115,28,.88);border-radius:10px;padding:8px 6px;text-align:center;color:#fff}
+    .score-num{font-size:2rem;font-weight:900;color:var(--gold);line-height:1}
+    .score-lab{font-size:1rem;line-height:1.1;margin-top:4px}
+    .list-panel{
+      border-radius:18px;border:1.5px solid #57ff2f;background:rgba(7,58,23,.38);padding:10px 10px 12px
+    }
+    .list-panel.white{border-color:#fff}
+    .list-title{font-size:1.4rem;line-height:1;color:#fff;margin-bottom:8px}
+    .name-grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .name-badges{display:flex;flex-wrap:wrap;gap:8px}
+    .name-chip{
+      display:inline-flex;align-items:center;justify-content:center;
+      min-height:34px;padding:0 10px;border-radius:8px;border:1.5px solid #57ff2f;color:var(--gold);background:rgba(87,255,47,.09);font-size:1rem
+    }
+    .name-chip.white{border-color:#fff;color:#fff;background:rgba(255,255,255,.06)}
+    .finance-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .finance-card{border-radius:18px;border:1.5px solid var(--line-green);background:rgba(0,0,0,.12);padding:14px}
+    .finance-card .stat-title{font-size:1.15rem}
+    .finance-card .stat-value{font-size:1.8rem}
+    .footer-nav{
+      position:fixed;left:0;right:0;bottom:0;z-index:35;background:rgba(11,63,32,.96);
+      border-top:1px solid rgba(255,255,255,.12);backdrop-filter: blur(10px)
+    }
+    .footer-nav-inner{max-width:430px;margin:0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px;padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
+    .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 2px;border-radius:16px;color:var(--gold);font-size:.9rem;line-height:1.1;text-align:center}
+    .nav-item.active{background:rgba(255,215,0,.08);box-shadow: inset 0 -2px 0 rgba(255,215,0,.35)}
+    .nav-ico{font-size:1.7rem;line-height:1}
+    .months{display:flex;gap:8px;overflow:auto;padding-bottom:8px}
+    .month-btn{border-radius:14px;border:1.5px solid #57ff2f;color:#fff;background:rgba(0,0,0,.12);padding:.7rem .7rem;min-width:52px;line-height:1.1}
+    .month-btn.active{background:rgba(87,255,47,.2);color:var(--gold)}
+    .hidden{display:none !important}
+    .hscroll{overflow:auto}
+    .table-box table{min-width:100%;font-size:.9rem}
+    .table-box th,.table-box td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.1);white-space:nowrap}
   </style>
 </head>
-
-<body class="bg-emerald-950 text-emerald-50 min-h-screen">
-  <!-- Top bar -->
-  <header class="safe-top sticky top-0 z-40 bg-emerald-950/80 backdrop-blur border-b border-emerald-900">
-    <div class="max-w-md mx-auto px-4 py-3 flex items-center gap-3">
-      <div class="h-9 w-9 rounded-2xl bg-emerald-500/15 border border-emerald-400/20 flex items-center justify-center">
-        <span class="text-emerald-300 font-bold">⛳</span>
+<body>
+<div class="app-shell">
+  <header class="header safe-top">
+    <div class="px-3 py-3 flex items-center gap-3">
+      <div class="h-12 w-12 rounded-2xl flex items-center justify-center bg-black/10 overflow-hidden">
+        <img src="./icons/icon-192.png" alt="" class="h-10 w-10 object-contain">
       </div>
-      <div class="flex-1">
-        <div class="text-base font-semibold leading-tight">球隊資訊查詢</div>
-        <div id="subtitle" class="text-xs text-emerald-200/70">請先登入</div>
+      <div class="flex-1 min-w-0">
+        <div class="gold font-extrabold text-xl leading-none">工研院快樂隊小宇宙</div>
+        <div id="topUser" class="mt-1 text-sm text-white/90">請先登入</div>
       </div>
-      <button id="btnLogout" class="hidden text-sm px-3 py-2 rounded-xl bg-emerald-900/60 hover:bg-emerald-900/80 border border-emerald-800/60">
-        登出
-      </button>
+      <button id="btnLogout" class="hidden rounded-2xl bg-emerald-500 text-white px-4 py-3 font-bold text-base">登出</button>
     </div>
   </header>
 
-  <!-- Main -->
-  <main class="max-w-md mx-auto px-4 py-5 safe-bottom">
-    <!-- Login view -->
-    <section id="viewLogin" class="">
-      <div class="mt-2 rounded-3xl border border-emerald-900 bg-emerald-900/30 p-5 shadow-sm">
-        <h1 class="text-lg font-semibold">登入</h1>
-        <div class="mt-3 rounded-2xl bg-emerald-950/40 border border-emerald-900 p-4">
-          <div class="text-base font-semibold">~ 工研院快樂隊小宇宙 ~</div>
-          <div class="mt-1 text-sm text-emerald-100/80 leading-relaxed">
-            歡迎對高爾夫球有熱誠，<br>
-            遵守高爾夫規則，<br>
-            發揮高爾夫精神的球友參加
+  <main class="px-3 pt-4 pb-28 safe-bottom">
+    <section id="viewLogin">
+      <div class="panel p-5">
+        <div class="section-title mb-5">登入</div>
+        <div class="panel p-5 text-center mb-4" style="background:rgba(0,0,0,.10)">
+          <div class="gold text-[2rem] font-black leading-none">~歡迎~</div>
+          <div class="mt-5 text-white text-[1.15rem] leading-[1.9] font-semibold">
+            對高爾夫球有熱忱,<br>
+            遵守高爾夫規則,<br>
+            發揮高爾夫精神,<br>
+            追求健康快樂的院友和球友
           </div>
         </div>
-        <p class="text-sm text-emerald-200/70 mt-1">輸入球隊密碼與姓名（需存在於「會員總表」的姓名欄）</p>
-
-        <div class="mt-4 space-y-3">
+        <div class="text-white/80 text-base mb-4">輸入球隊密碼與姓名（需存在於「會員總表」的姓名欄）</div>
+        <div class="space-y-4">
           <div>
-            <label class="text-xs text-emerald-200/70">球隊密碼</label>
-            <input id="teamPwd" type="password" inputmode="text" autocomplete="current-password"
-              class="mt-1 w-full rounded-2xl bg-emerald-950/40 border border-emerald-900 px-4 py-3 text-base outline-none focus:ring-2 focus:ring-emerald-500/30"
-              placeholder="輸入球隊密碼">
+            <div class="text-sm text-white/85 mb-1">球隊密碼</div>
+            <input id="teamPwd" class="login-input" type="password" placeholder="輸入球隊密碼" />
           </div>
-
           <div>
-            <label class="text-xs text-emerald-200/70">姓名</label>
-            <input id="memberName" type="text" inputmode="text" autocomplete="name"
-              class="mt-1 w-full rounded-2xl bg-emerald-950/40 border border-emerald-900 px-4 py-3 text-base outline-none focus:ring-2 focus:ring-emerald-500/30"
-              placeholder="例：王小明">
+            <div class="text-sm text-white/85 mb-1">姓名</div>
+            <input id="memberName" class="login-input" type="text" placeholder="例：王小明" />
           </div>
-
-          <button id="btnLogin"
-            class="w-full rounded-2xl bg-emerald-500 text-emerald-950 font-semibold py-3 hover:bg-emerald-400 active:bg-emerald-600 transition">
-            進入
-          </button>
-
-          <div id="loginMsg" class="text-sm text-rose-300 hidden"></div>
-
-          <div class="text-xs text-emerald-200/50 leading-relaxed">
-            📱 建議將本頁加入主畫面（像 App 一樣使用）<br>iPhone：分享 → 加入主畫面<br>Android：瀏覽器選單 → 安裝應用程式<br><br>提醒：不採用個別帳號登入的前提下，屬於「知道球隊密碼的人可查閱」的門檻式保護。建議球隊密碼定期更換。
+          <button id="btnLogin" class="login-btn">進入</button>
+          <div id="loginMsg" class="hidden text-sm text-rose-300"></div>
+          <div class="text-sm text-white/60 leading-7">
+            📱 建議將本頁加入主畫面（像 App 一樣使用）<br>
+            iPhone：分享 → 加入主畫面<br>
+            Android：瀏覽器選單 → 安裝應用程式
           </div>
         </div>
-      </div>
-
-      <div class="mt-4 text-xs text-emerald-200/50">
-        <div class="font-semibold text-emerald-200/70 mb-1">管理者設定（你要做一次）</div>
-        <ol class="list-decimal pl-5 space-y-1">
-          <li>在 Google 試算表：擴充功能 → Apps Script → 部署為「網路應用程式」。</li>
-          <li>將部署後網址貼到 <span class="text-emerald-100">config.js</span> 的 API_BASE。</li>
-          <li>把此網站放到 GitHub Pages / Cloudflare Pages / 任何靜態空間。</li>
-        </ol>
       </div>
     </section>
 
-    <!-- App view -->
     <section id="viewApp" class="hidden">
-      <!-- Quick actions -->
-      <div class="grid grid-cols-2 gap-3 mt-2">
-        <a href="#/members" class="rounded-3xl border border-emerald-900 bg-emerald-900/30 p-4 hover:bg-emerald-900/40 transition">
-          <div class="text-xs text-emerald-200/70">會員戰績表</div>
-          <div class="mt-1 text-base font-semibold">查會員</div>
-          <div class="mt-2 text-xs text-emerald-200/50">基本資料 / 當年比賽紀錄</div>
-        </a>
-        <a href="#/monthly" class="rounded-3xl border border-emerald-900 bg-emerald-900/30 p-4 hover:bg-emerald-900/40 transition">
-          <div class="text-xs text-emerald-200/70">賽事龍虎榜</div>
-          <div class="mt-1 text-base font-semibold">看月例賽</div>
-          <div class="mt-2 text-xs text-emerald-200/50">1~12 月例賽排行</div>
-        </a>
-        <a href="#/annual" class="rounded-3xl border border-emerald-900 bg-emerald-900/30 p-4 hover:bg-emerald-900/40 transition">
-          <div class="text-xs text-emerald-200/70">年度風雲錄</div>
-          <div class="mt-1 text-base font-semibold">看年度榜</div>
-          <div class="mt-2 text-xs text-emerald-200/50">年度積分/獎項</div>
-        </a>
-        <a href="#/finance" class="rounded-3xl border border-emerald-900 bg-emerald-900/30 p-4 hover:bg-emerald-900/40 transition">
-          <div class="text-xs text-emerald-200/70">快樂財經閣</div>
-          <div class="mt-1 text-base font-semibold">看財務</div>
-          <div class="mt-2 text-xs text-emerald-200/50">財務報表 + 隊球結餘</div>
-        </a>
-      </div>
-
-      <!-- Router outlet -->
-      <div id="routeOutlet" class="mt-4"></div>
+      <div id="routeOutlet"></div>
     </section>
   </main>
 
-  <!-- Bottom nav -->
-  <nav id="bottomNav" class="hidden fixed bottom-0 left-0 right-0 safe-bottom bg-emerald-950/90 backdrop-blur border-t border-emerald-900">
-    <div class="max-w-md mx-auto px-4 py-2 grid grid-cols-4 gap-2 text-xs">
-      <a class="navitem text-emerald-100 py-2 rounded-xl text-center hover:bg-emerald-950/60" href="#/home">首頁</a>
-      <a class="navitem text-emerald-100 py-2 rounded-xl text-center hover:bg-emerald-950/60" href="#/members">會員</a>
-      <a class="navitem text-emerald-100 py-2 rounded-xl text-center hover:bg-emerald-950/60" href="#/monthly">月例賽</a>
-      <a class="navitem text-emerald-100 py-2 rounded-xl text-center hover:bg-emerald-950/60" href="#/finance">財經</a>
+  <nav id="bottomNav" class="footer-nav hidden">
+    <div class="footer-nav-inner">
+      <a href="#/home" class="nav-item" data-route="/home"><div class="nav-ico">👤</div><div>會員戰績表</div></a>
+      <a href="#/monthly" class="nav-item" data-route="/monthly"><div class="nav-ico">🏆</div><div>賽事龍虎榜</div></a>
+      <a href="#/annual" class="nav-item" data-route="/annual"><div class="nav-ico">👑</div><div>年度風雲錄</div></a>
+      <a href="#/finance" class="nav-item" data-route="/finance"><div class="nav-ico">💰</div><div>快樂財經閣</div></a>
     </div>
   </nav>
+</div>
 
-  <script src="./config.js"></script>
-  <script>
-    // ---------- Helpers ----------
-    const $ = (id) => document.getElementById(id);
-    const show = (el) => el.classList.remove("hidden");
-    const hide = (el) => el.classList.add("hidden");
+<script src="./config.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const show = el => el.classList.remove('hidden');
+const hide = el => el.classList.add('hidden');
 
-    function setSubtitle(text){ $("subtitle").textContent = text; }
-    function toastError(msg){
-      const box = $("loginMsg");
-      box.textContent = msg;
-      box.classList.remove("hidden");
-      setTimeout(()=>box.classList.add("hidden"), 4500);
-    }
+function getSession(){
+  return {
+    team: sessionStorage.getItem('teamPwd') || '',
+    name: sessionStorage.getItem('memberName') || ''
+  };
+}
+function setSession(team,name){
+  sessionStorage.setItem('teamPwd', team);
+  sessionStorage.setItem('memberName', name);
+}
+function clearSession(){
+  sessionStorage.removeItem('teamPwd');
+  sessionStorage.removeItem('memberName');
+}
+function topUserText(text){ $('topUser').textContent = text; }
+function setNavActive(route){
+  document.querySelectorAll('.nav-item').forEach(a => a.classList.toggle('active', a.dataset.route === route));
+}
+function escapeHtml(s){
+  return String(s ?? '')
+    .replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
+    .replaceAll('"','&quot;').replaceAll("'",'&#039;');
+}
+function fmtNum(x){
+  const s = String(x ?? '').trim();
+  return s || '0';
+}
+function setLoading(btn, on, text='登入中...'){
+  if(!btn) return;
+  if(on){
+    btn.dataset.oldText = btn.textContent;
+    btn.disabled = true;
+    btn.classList.add('opacity-70');
+    btn.textContent = text;
+  }else{
+    btn.disabled = false;
+    btn.classList.remove('opacity-70');
+    btn.textContent = btn.dataset.oldText || '進入';
+  }
+}
+async function apiGet(params){
+  const url = new URL(API_BASE);
+  Object.entries(params).forEach(([k,v]) => url.searchParams.set(k, v));
+  const res = await fetch(url.toString(), { cache: 'no-store' });
+  if(!res.ok) throw new Error('HTTP '+res.status);
+  return await res.json();
+}
+function renderShellLoggedIn(name){
+  hide($('viewLogin'));
+  show($('viewApp'));
+  show($('bottomNav'));
+  show($('btnLogout'));
+  topUserText('已登入：' + name);
+}
+function renderShellLoggedOut(){
+  show($('viewLogin'));
+  hide($('viewApp'));
+  hide($('bottomNav'));
+  hide($('btnLogout'));
+  topUserText('請先登入');
+  $('routeOutlet').innerHTML = '';
+  window.location.hash = '#/home';
+}
+function pageSection(title, subtitle, inner){
+  return `
+    <section>
+      <div class="section-title">${title}</div>
+      ${subtitle ? `<div class="section-subtitle mt-1">${subtitle}</div>`:''}
+      <div class="mt-4">${inner}</div>
+    </section>
+  `;
+}
 
-    function getSession(){
-      const team = sessionStorage.getItem("teamPwd") || "";
-      const name = sessionStorage.getItem("memberName") || "";
-      return { team, name };
-    }
-    function setSession(team, name){
-      sessionStorage.setItem("teamPwd", team);
-      sessionStorage.setItem("memberName", name);
-    }
-    function clearSession(){
-      sessionStorage.removeItem("teamPwd");
-      sessionStorage.removeItem("memberName");
-    }
-
-    async function apiGet(params){
-      const url = new URL(API_BASE);
-      Object.entries(params).forEach(([k,v]) => url.searchParams.set(k, v));
-      const res = await fetch(url.toString(), { cache: "no-store" });
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      return await res.json();
-    }
-
-    // ---------- Views ----------
-    function renderShellLoggedIn(name){
-      hide($("viewLogin"));
-      show($("viewApp"));
-      show($("bottomNav"));
-      show($("btnLogout"));
-      setSubtitle("已登入：" + name);
-    }
-    function renderShellLoggedOut(){
-      show($("viewLogin"));
-      hide($("viewApp"));
-      hide($("bottomNav"));
-      hide($("btnLogout"));
-      setSubtitle("請先登入");
-      $("routeOutlet").innerHTML = "";
-      window.location.hash = "#/home";
-    }
-
-    // ---------- Routes ----------
-    function pageWrapper(title, subtitle, innerHtml){
+async function routeHome(){
+  return routeMembers();
+}
+async function routeMembers(){
+  setNavActive('/home');
+  const { team } = getSession();
+  $('routeOutlet').innerHTML = pageSection('會員戰績表','',`<div id="memberGrid" class="member-grid"></div>`);
+  const grid = $('memberGrid');
+  try{
+    const json = await apiGet({ action:'members', team });
+    if(!json.ok) throw new Error(json.error || 'unknown');
+    const members = (json.members || []).filter(x => String(x['姓名']||'').trim()).sort((a,b)=>String(a['姓名']||'').localeCompare(String(b['姓名']||''),'zh-Hant'));
+    grid.innerHTML = members.map(m => {
+      const senior = String(m['樂齡']||'').trim().toUpperCase()==='Y';
+      const cardClass = senior ? 'green' : 'blue';
+      const identity = String(m['身份']||'會員').trim() || '會員';
+      const nmClass = identity === '新人' ? 'newbie' : 'member';
+      const seniorLabel = senior ? '樂齡' : '一般';
       return `
-        <div class="rounded-3xl border border-emerald-900 bg-emerald-900/30 p-5 shadow-sm">
-          <div class="flex items-start gap-3">
-            <div class="h-10 w-10 rounded-2xl bg-emerald-900/60 flex items-center justify-center">📌</div>
-            <div class="flex-1">
-              <div class="text-lg font-semibold">${title}</div>
-              <div class="text-xs text-emerald-200/70 mt-1">${subtitle || ""}</div>
-            </div>
+        <button class="member-card ${cardClass}" data-name="${escapeHtml(m['姓名'])}">
+          <div class="member-left">
+            <div class="member-name ${nmClass}">${escapeHtml(m['姓名'])}</div>
+            <div class="member-hcp">${escapeHtml(m['最新差點'] || '—')}</div>
           </div>
-          <div class="mt-4">${innerHtml}</div>
+          <div class="member-right">
+            <div class="mini-label">${escapeHtml(identity)}</div>
+            <div>${senior ? `<span class="badge">${seniorLabel}</span>` : `<div class="mini-label">${seniorLabel}</div>`}</div>
+          </div>
+        </button>
+      `;
+    }).join('');
+    grid.querySelectorAll('[data-name]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        window.location.hash = '#/member/' + encodeURIComponent(btn.dataset.name || '');
+      });
+    });
+  }catch(err){
+    grid.innerHTML = `<div class="panel p-4 text-rose-300">${escapeHtml(String(err.message||err))}</div>`;
+  }
+}
+
+function normalizeKeyMap(obj){
+  const keys = Object.keys(obj || {});
+  return keys.map(k => ({ raw:k, norm:k.toLowerCase().replace(/\s+/g,'') }));
+}
+function findList(obj, patterns){
+  const items = normalizeKeyMap(obj);
+  for(const p of patterns){
+    const found = items.find(x => x.norm.includes(p));
+    if(found) return obj[found.raw] || [];
+  }
+  return [];
+}
+function findStat(arr, patterns){
+  const list = arr || [];
+  for(const p of patterns){
+    const found = list.find(x => String(x.category||'').toLowerCase().replace(/\s+/g,'').includes(p));
+    if(found) return found;
+  }
+  return null;
+}
+function scoreCard(label, value){
+  return `<div class="score-box"><div class="score-num">${escapeHtml(value ?? '—')}</div><div class="score-lab">${escapeHtml(label)}</div></div>`;
+}
+function podiumCard(item, rank, labels){
+  if(!item) return '';
+  const labs = labels && labels.length>=4 ? labels.slice(0,4) : ['總桿','淨桿','差點','新差'];
+  const vals = item.stats || [];
+  const rankColor = rank==='冠軍'?'#8b3ea9':'#8b3ea9';
+  return `
+    <div class="match-card ${rank==='亞軍' || rank==='季軍' ? 'alt':''}">
+      <div class="match-head">
+        <div class="match-name">${escapeHtml(item.name || '')}</div>
+        <div class="match-rank" style="color:${rankColor}">${rank}</div>
+      </div>
+      <div class="score-grid">
+        ${scoreCard(labs[0], vals[0])}
+        ${scoreCard(labs[1], vals[1])}
+        ${scoreCard(labs[2], vals[2])}
+        ${scoreCard(labs[3], vals[3])}
+      </div>
+    </div>
+  `;
+}
+function twoStatCard(item, label){
+  if(!item) return '';
+  const vals = item.stats || [];
+  return `
+    <div class="match-card alt">
+      <div class="match-head">
+        <div class="match-name">${escapeHtml(item.name || '')}</div>
+        <div class="match-rank">${label}</div>
+      </div>
+      <div class="score-grid two">
+        ${scoreCard('總桿', vals[0])}
+        ${scoreCard('淨桿', vals[1])}
+      </div>
+    </div>
+  `;
+}
+function fixedFourPanel(title, names){
+  const chips = Array.from({length:4},(_,i)=>`<span class="name-chip">${escapeHtml(names[i] || '')}</span>`).join('');
+  return `<div class="list-panel"><div class="list-title">${title}</div><div class="name-grid-4">${chips}</div></div>`;
+}
+function variablePanel(title, names, white=false){
+  const chips = names.length ? names.map(n => `<span class="name-chip ${white?'white':''}">${escapeHtml(n)}</span>`).join('') : `<span class="name-chip ${white?'white':''}" style="opacity:.7">　</span>`;
+  return `<div class="list-panel ${white?'white':''}"><div class="list-title">${title}</div><div class="name-badges">${chips}</div></div>`;
+}
+async function routeMonthly(){
+  setNavActive('/monthly');
+  const { team } = getSession();
+  $('routeOutlet').innerHTML = pageSection('賽事龍虎榜','',`
+    <div class="months">
+      ${Array.from({length:12},(_,i)=>`<button class="month-btn" data-m="${i+1}">${i+1}<br>月</button>`).join('')}
+    </div>
+    <div id="monthlyBody" class="mt-4"></div>
+  `);
+  const body = $('monthlyBody');
+  async function loadMonth(m){
+    document.querySelectorAll('.month-btn').forEach(b => b.classList.toggle('active', b.dataset.m===String(m)));
+    body.innerHTML = `<div class="text-white/80">讀取 ${m} 月資料中...</div>`;
+    try{
+      const json = await apiGet({ action:'monthly', team, month:String(m) });
+      if(!json.ok) throw new Error(json.error || 'unknown');
+      const statWinners = json.statWinners || [];
+      const statLabels = json.statLabels || [];
+      const listWinners = json.listWinners || {};
+      const champ = findStat(statWinners,['冠軍']);
+      const second = findStat(statWinners,['亞軍']);
+      const third = findStat(statWinners,['季軍']);
+      const lucky = findStat(statWinners,['lucky7','lucky７','lucky']);
+      const bb = findStat(statWinners,['bb']);
+      const near = findList(listWinners,['近洞']);
+      const secondNear = findList(listWinners,['二近']);
+      const far = findList(listWinners,['遠距']);
+      const other = findList(listWinners,['其他']);
+      const eagle = findList(listWinners,['eagle','獵鷹']);
+      const birdie = findList(listWinners,['birdie','抓鳥']);
+      const haha = findList(listWinners,['哈哈']);
+
+      body.innerHTML = `
+        <div class="section-subtitle mb-3">${escapeHtml(json.title || `${m}月例賽成績`)}</div>
+        <div class="space-y-3">
+          ${champ ? podiumCard(champ, '冠軍', statLabels) : ''}
+          ${second ? podiumCard(second, '亞軍', statLabels) : ''}
+          ${third ? podiumCard(third, '季軍', statLabels) : ''}
+        </div>
+        <div class="grid grid-cols-2 gap-3 mt-3">
+          ${lucky ? twoStatCard(lucky,'Lucky7') : ''}
+          ${bb ? twoStatCard(bb,'BB') : ''}
+        </div>
+        <div class="mt-4 space-y-3">
+          ${fixedFourPanel('近洞', near)}
+          ${fixedFourPanel('二近', secondNear)}
+          ${fixedFourPanel('遠距', far)}
+          ${fixedFourPanel('其他', other)}
+          ${variablePanel('Birdie', birdie)}
+          ${variablePanel('Eagle', eagle)}
+          ${variablePanel('哈哈', haha, true)}
         </div>
       `;
+    }catch(err){
+      body.innerHTML = `<div class="panel p-4 text-rose-300">${escapeHtml(String(err.message||err))}</div>`;
     }
-
-    async function routeHome(){
-      await routeMembers(true);
-    }
-
-    async function routeMembers(isHome=false){
-      const { team } = getSession();
-      const title = "會員戰績表";
-      const sub = "";
-
-      $("routeOutlet").innerHTML = pageWrapper(
-        title,
-        sub,
-        `
-          <div id="memberGrid" class="mt-2 grid grid-cols-2 gap-3"></div>
-          <div id="memberEmpty" class="mt-3 text-sm text-emerald-200/70 hidden">（查無資料）</div>
-        `
-      );
-
-      const grid = $("memberGrid");
-      const empty = $("memberEmpty");
-
-      function render(list){
-        grid.innerHTML = "";
-        if (!list.length){
-          empty.classList.remove("hidden");
-          return;
-        }
-        empty.classList.add("hidden");
-
-        list.forEach(m=>{
-          const isSenior = (String(m["樂齡"]||"").trim().toUpperCase()==="Y");
-          const bg = isSenior ? "bg-emerald-900/35 border-emerald-700/40" : "bg-sky-950/40 border-sky-800/50";
-          const tag = isSenior
-            ? `<span class="text-[11px] px-2 py-1 rounded-full bg-emerald-400/20 border border-emerald-300/20 text-emerald-100">樂齡</span>`
-            : `<span class="text-[11px] px-2 py-1 rounded-full bg-sky-400/10 border border-sky-300/10 text-sky-100/90">一般</span>`;
-          const identity = escapeHtml(m["身份"] || "會員");
-          const hcp = escapeHtml(m["最新差點"] || "—");
-          const nm = escapeHtml(m["姓名"] || "");
-
-          grid.insertAdjacentHTML("beforeend", `
-            <button class="text-left rounded-3xl border ${bg} p-4 active:scale-[0.99] transition" data-name="${nm}">
-              <div class="flex items-start justify-between gap-2">
-                ${tag}
-                <div class="text-[11px] text-emerald-100/70">${identity}</div>
-              </div>
-
-              <div class="mt-3 text-lg font-extrabold tracking-tight text-emerald-50">${nm}</div>
-
-              <div class="mt-2">
-                <div class="text-[11px] text-emerald-100/70">差點</div>
-                <div class="text-3xl font-black text-emerald-50 leading-none">${hcp}</div>
-              </div>
-            </button>
-          `);
-        });
-
-        grid.querySelectorAll("button[data-name]").forEach(btn=>{
-          btn.addEventListener("click", ()=>{
-            const nm = btn.getAttribute("data-name") || "";
-            window.location.hash = "#/member/" + encodeURIComponent(nm);
-          });
-        });
-      }
-
-      try{
-        const json = await apiGet({ action:"members", team });
-        if (!json.ok) throw new Error(json.error || "unknown");
-        const members = (json.members || []).filter(x=>String(x["姓名"]||"").trim());
-        render(members);
-      }catch(err){
-        grid.innerHTML = `
-          <div class="col-span-2 rounded-2xl border border-emerald-900 bg-emerald-950/40 p-4">
-            <div class="text-sm text-rose-200">讀取失敗：${escapeHtml(String(err.message||err))}</div>
-            <div class="mt-2 text-xs text-emerald-200/60">請確認 Apps Script action=members 與試算表欄位設定。</div>
-          </div>
-        `;
-      }
-    }
-
-
-
-
-    async function routeMonthly(){
-      const { team } = getSession();
-
-      // initial skeleton
-      $("routeOutlet").innerHTML = pageWrapper(
-        "賽事龍虎榜",
-        "選擇月份查看月例賽榜單（前 3 名＋其他獎項）",
-        `
-          <div class="flex gap-2 overflow-x-auto pb-2">
-            ${Array.from({length:12},(_,i)=>`<button data-m="${i+1}" class="monthbtn px-3 py-2 rounded-xl bg-emerald-900/60 hover:bg-emerald-900/80 border border-emerald-800/60 whitespace-nowrap">${i+1}月</button>`).join("")}
-          </div>
-
-          <div id="monthlyBody" class="mt-4">
-            <div class="text-sm text-emerald-200/70">請先選擇月份</div>
-          </div>
-        `
-      );
-
-      const body = $("monthlyBody");
-
-      async function loadMonth(m){
-        body.innerHTML = `<div class="text-sm text-emerald-200/70">讀取 ${m} 月榜單中…</div>`;
-        try{
-          const json = await apiGet({ action:"monthly", team, month: String(m) });
-          if (!json.ok) throw new Error(json.error || "unknown");
-
-          const { title, statLabels, statWinners, listWinners } = json;
-
-          // Podium cards (冠/亞/季 if present)
-          const podiumPlaces = ["冠軍","亞軍","季軍"];
-          const podium = (statWinners || []).filter(x => podiumPlaces.includes(x.category));
-
-          const podiumHtml = podium.length ? `
-            <div class="grid grid-cols-1 gap-3">
-              ${podium.map((p, idx)=>`
-                <div class="rounded-2xl border border-emerald-900 bg-emerald-950/40 p-4">
-                  <div class="flex items-center justify-between">
-                    <div class="text-xs text-emerald-200/70">${escapeHtml(p.category)}</div>
-                    <div class="text-xs px-2 py-1 rounded-lg bg-emerald-500/15 border border-emerald-400/20 text-emerald-200">TOP ${idx+1}</div>
-                  </div>
-                  <div class="mt-2 text-xl font-bold">${escapeHtml(p.name || "—")}</div>
-                  <div class="mt-3 grid grid-cols-2 gap-2 text-sm">
-                    ${(statLabels || []).map((lab, i)=>`
-                      <div class="rounded-xl bg-emerald-900/30 border border-emerald-900 px-3 py-2">
-                        <div class="text-xs text-emerald-200/70">${escapeHtml(lab)}</div>
-                        <div class="mt-1 font-semibold">${escapeHtml((p.stats && p.stats[i] != null) ? p.stats[i] : "—")}</div>
-                      </div>
-                    `).join("")}
-                  </div>
-                </div>
-              `).join("")}
-            </div>
-          ` : "";
-
-          // Other stat-based awards (Lucky 7 / BB etc)
-          const otherStats = (statWinners || []).filter(x => !podiumPlaces.includes(x.category));
-          const otherStatsHtml = otherStats.length ? `
-            <div class="mt-4 rounded-3xl border border-emerald-900 bg-emerald-950/30 p-4">
-              <div class="text-sm font-semibold">其他獎項</div>
-              <div class="mt-3 space-y-3">
-                ${otherStats.map(p=>`
-                  <div class="rounded-2xl border border-emerald-900 bg-emerald-950/40 p-4">
-                    <div class="text-xs text-emerald-200/70">${escapeHtml(p.category)}</div>
-                    <div class="mt-1 text-lg font-bold">${escapeHtml(p.name || "—")}</div>
-                    ${(statLabels || []).length ? `
-                      <div class="mt-3 grid grid-cols-2 gap-2 text-sm">
-                        ${(statLabels || []).map((lab, i)=>`
-                          <div class="rounded-xl bg-emerald-900/30 border border-emerald-900 px-3 py-2">
-                            <div class="text-xs text-emerald-200/70">${escapeHtml(lab)}</div>
-                            <div class="mt-1 font-semibold">${escapeHtml((p.stats && p.stats[i] != null) ? p.stats[i] : "—")}</div>
-                          </div>
-                        `).join("")}
-                      </div>
-                    ` : ``}
-                  </div>
-                `).join("")}
-              </div>
-            </div>
-          ` : "";
-
-          // List-based awards (哈哈/近洞/二近 etc)
-          const listCats = Object.keys(listWinners || {});
-          const listHtml = listCats.length ? `
-            <div class="mt-4 rounded-3xl border border-emerald-900 bg-emerald-950/30 p-4">
-              <div class="text-sm font-semibold">名單類獎項</div>
-              <div class="mt-3 space-y-4">
-                ${listCats.map(cat=>{
-                  const arr = listWinners[cat] || [];
-                  return `
-                    <div>
-                      <div class="text-xs text-emerald-200/70">${escapeHtml(cat)}</div>
-                      <div class="mt-2 flex flex-wrap gap-2">
-                        ${arr.length ? arr.map(n=>`<span class="text-sm px-3 py-1 rounded-full bg-emerald-900/40 border border-emerald-900">${escapeHtml(n)}</span>`).join("") : `<span class="text-sm text-emerald-200/50">—</span>`}
-                      </div>
-                    </div>
-                  `;
-                }).join("")}
-              </div>
-            </div>
-          ` : "";
-
-          body.innerHTML = `
-            <div class="text-xs text-emerald-200/70">${escapeHtml(title || `${m}月榜單`)}</div>
-            ${podiumHtml || `<div class="mt-3 text-sm text-emerald-200/70">（本月未設定冠亞季或資料為空）</div>`}
-            ${otherStatsHtml}
-            ${listHtml}
-          `;
-
-        }catch(err){
-          body.innerHTML = `
-            <div class="rounded-2xl border border-emerald-900 bg-emerald-950/40 p-4">
-              <div class="text-sm text-rose-300">讀取失敗：${escapeHtml(String(err.message || err))}</div>
-              <div class="mt-2 text-xs text-emerald-200/50">請確認 Apps Script 已新增 action=monthly，且試算表中有「${m}月榜單」分頁。</div>
-            </div>
-          `;
-        }
-      }
-
-      // bind buttons
-      document.querySelectorAll(".monthbtn").forEach(btn=>{
-        btn.addEventListener("click", ()=>{
-          document.querySelectorAll(".monthbtn").forEach(b=>b.classList.remove("bg-emerald-500","text-emerald-950","border-emerald-400"));
-          btn.classList.add("bg-emerald-500","text-emerald-950","border-emerald-400");
-          loadMonth(btn.dataset.m);
-        });
-      });
-
-      // auto load current month (Taipei) as a convenience
-      const now = new Date();
-      const m = now.getMonth()+1;
-      const autoBtn = document.querySelector(`.monthbtn[data-m="${m}"]`) || document.querySelector(`.monthbtn[data-m="1"]`);
-      if (autoBtn) autoBtn.click();
-    }
-
-    async function routeAnnual(){
-      $("routeOutlet").innerHTML = pageWrapper(
-        "年度風雲錄",
-        "（下一步我會把 年度成績 做成：排行榜 + 獎項徽章）",
-        `<div class="text-sm text-emerald-100">
-           會用「卡片」方式呈現，不會直接丟表格給手機。
-         </div>`
-      );
-    }
-
-    function numOrNull(x){
-      if (x === null || x === undefined) return null;
-      const s = String(x).replace(/,/g,"").trim();
-      if (!s) return null;
-      const n = Number(s);
-      return Number.isFinite(n) ? n : null;
-    }
-
-    function pickFinanceSummary(financeTable){
-      // financeTable is 2D display values from B1:O17
-      // We try to locate row with '結餘' in first column, and pick latest month column value.
-      if (!financeTable || financeTable.length < 2) return { monthLabel:null, balance:null, ytd:null };
-
-      const header = financeTable[0]; // month headers likely start at col 1
-      const firstCol = financeTable.map(r => (r[0] || "").toString().trim());
-      const idx = firstCol.findIndex(v => v === "結餘");
-      if (idx === -1) return { monthLabel:null, balance:null, ytd:null };
-
-      const row = financeTable[idx];
-      // find last numeric in row (skip first column label)
-      let lastNum = null;
-      let lastCol = null;
-      for (let c = row.length - 1; c >= 1; c--){
-        const n = numOrNull(row[c]);
-        if (n !== null){ lastNum = n; lastCol = c; break; }
-      }
-      const monthLabel = lastCol !== null ? (header[lastCol] || "") : "";
-      return { monthLabel, balance: lastNum, ytd: lastNum };
-    }
-
-    async function routeFinance(){
-      const { team } = getSession();
-      $("routeOutlet").innerHTML = pageWrapper("快樂財經閣", "讀取中…", `<div class="text-sm text-emerald-200/70">Loading…</div>          <div class="mt-4 rounded-3xl border border-emerald-900 bg-emerald-950/25 p-4">
-            <div class="text-sm font-semibold">球隊規則</div>
-            <div class="mt-2 text-sm text-emerald-100/80 leading-relaxed">
-              依球隊公告與「參數設定」內容為準。若有疑問，請洽總幹事。
-            </div>
-          </div>
-        `
-      );
-
-      try{
-        const json = await apiGet({ action: "finance", team });
-        if (!json.ok) throw new Error(json.error || "unknown");
-
-        const financeTable = json.financeTable || [];
-        const ballBalance = json.ballBalance;
-
-        const s = pickFinanceSummary(financeTable);
-        const balanceText = (s.balance === null || s.balance === undefined) ? "—" : s.balance.toLocaleString("zh-TW");
-        const monthText = s.monthLabel ? `（${s.monthLabel}）` : "";
-
-        const ballText = (ballBalance === null || ballBalance === undefined) ? "—" : Number(ballBalance).toLocaleString("zh-TW");
-
-        const cards = `
-          <div class="grid grid-cols-2 gap-3">
-            <div class="rounded-2xl bg-emerald-950/40 border border-emerald-900 p-4">
-              <div class="text-xs text-emerald-200/70">最新結餘 ${monthText}</div>
-              <div class="mt-2 text-2xl font-bold">${balanceText}</div>
-              <div class="mt-1 text-xs text-emerald-200/50">來自「財務報表」的結餘列</div>
-            </div>
-            <div class="rounded-2xl bg-emerald-950/40 border border-emerald-900 p-4">
-              <div class="text-xs text-emerald-200/70">隊球結餘</div>
-              <div class="mt-2 text-2xl font-bold">${ballText}</div>
-              <div class="mt-1 text-xs text-emerald-200/50">來自「隊球庫存」的結餘欄</div>
-            </div>
-          </div>
-        `;
-
-        const tableHtml = renderMatrixTable(financeTable);
-
-        $("routeOutlet").innerHTML = pageWrapper(
-          "快樂財經閣",
-          "只顯示：財務報表 + 隊球結餘（不含收支明細）",
-          `
-            ${cards}
-            <div class="mt-4">
-              <div class="flex items-center justify-between">
-                <div class="text-sm font-semibold">財務報表</div>
-                <button id="btnToggleFin" class="text-xs px-3 py-2 rounded-xl bg-emerald-900/60 hover:bg-emerald-900/80 border border-emerald-800/60">
-                  展開/收合
-                </button>
-              </div>
-              <div id="finWrap" class="mt-3 hidden">
-                <div class="hscroll overflow-x-auto rounded-2xl border border-emerald-900 bg-emerald-950/30">
-                  ${tableHtml}
-                </div>
-                <div class="text-xs text-emerald-200/50 mt-2">表格可左右滑動；我也可以把它改成「月份切換 + 科目卡片」更適合手機。</div>
-              </div>
-            </div>
-          `
-        );
-
-        $("btnToggleFin").addEventListener("click", ()=>{
-          $("finWrap").classList.toggle("hidden");
-        });
-
-      }catch(err){
-        $("routeOutlet").innerHTML = pageWrapper(
-          "快樂財經閣",
-          "讀取失敗",
-          `<div class="text-sm text-rose-300">
-             無法取得資料：${String(err.message || err)}
-             <div class="mt-2 text-xs text-emerald-200/50">請確認 Apps Script 已部署為網路應用程式，且 config.js 的 API_BASE 正確。</div>
-           </div>`
-        );
-      }
-    }
-
-    function escapeHtml(s){
-      return String(s ?? "")
-        .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;").replaceAll("'","&#039;");
-    }
-
-    function renderMatrixTable(values){
-      if (!values || values.length === 0) return `<div class="p-4 text-sm text-emerald-200/70">（沒有資料）</div>`;
-      const rows = values.map(r => r.map(escapeHtml));
-      const thead = rows[0];
-      const body = rows.slice(1);
-
-      let html = `<table class="min-w-full text-sm text-slate-200">`;
-      html += `<thead class="bg-emerald-900/30">`;
-      html += `<tr>`;
-      thead.forEach((h, i)=>{
-        html += `<th class="px-3 py-2 whitespace-nowrap ${i===0 ? "sticky left-0 bg-slate-900/80 backdrop-blur border-r border-emerald-900" : ""}">${h}</th>`;
-      });
-      html += `</tr></thead><tbody>`;
-      body.forEach(row=>{
-        html += `<tr class="border-t border-emerald-900/70">`;
-        row.forEach((c, i)=>{
-          html += `<td class="px-3 py-2 whitespace-nowrap ${i===0 ? "sticky left-0 bg-emerald-950/60 backdrop-blur border-r border-emerald-900 font-semibold" : ""}">${c}</td>`;
-        });
-        html += `</tr>`;
-      });
-      html += `</tbody></table>`;
-      return html;
-    }
-
-    
-    async function routeMemberDetail(memberName){
-      const { team } = getSession();
-      $("routeOutlet").innerHTML = pageWrapper("會員戰績表", "讀取中…", `<div class="text-sm text-emerald-200/70">Loading…</div>`);
-      try{
-        const json = await apiGet({ action:"member", team, name: memberName });
-        if (!json.ok) throw new Error(json.error || "unknown");
-        const m = json.member || {};
-
-        const isSenior = String(m["樂齡"]||"").trim().toUpperCase()==="Y";
-        const seniorLabel = isSenior ? "樂齡/一般　樂齡" : "樂齡/標準　一般";
-
-        const stats = [
-          ["年度積分", m["年度積分"]],
-          ["參賽場數", m["參賽場數"]],
-          ["今年遠距獎次數", m["遠距獎"]],
-          ["今年Eagle次數", m["獵鷹"]],
-          ["今年Birdie次數", m["抓鳥"]],
-        ];
-
-        const fees = [
-          ["總繳健身費", m["總繳健身費"]],
-          ["累計健身費", m["累計健身費"]],
-        ];
-
-        $("routeOutlet").innerHTML = `
-          <div class="rounded-3xl border border-emerald-900 bg-emerald-900/25 p-5 shadow-sm">
-            <div class="flex items-start justify-between gap-3">
-              <div>
-                <div class="text-lg font-semibold">${escapeHtml(m["姓名"]||memberName)}</div>
-                <div class="mt-1 text-xs text-emerald-200/70">${escapeHtml(m["身份"]||"")}</div>
-              </div>
-              <a href="#/home" class="text-xs px-3 py-2 rounded-xl bg-emerald-900/50 hover:bg-emerald-900/70 border border-emerald-800/60">返回</a>
-            </div>
-
-            <div class="mt-4 grid grid-cols-2 gap-3">
-              <div class="rounded-2xl bg-emerald-950/35 border border-emerald-900 p-4">
-                <div class="text-xs text-emerald-200/70">最新差點</div>
-                <div class="mt-2 text-3xl font-bold">${escapeHtml(m["最新差點"]||"—")}</div>
-                <div class="mt-2 text-xs text-emerald-200/60">初始差點：${escapeHtml(m["初始差點"]||"—")}</div>
-              </div>
-              <div class="rounded-2xl bg-emerald-950/35 border border-emerald-900 p-4">
-                <div class="text-xs text-emerald-200/70">基本資料</div>
-                <div class="mt-2 text-sm text-emerald-50">性別：<span class="font-semibold">${escapeHtml(m["性別"]||"—")}</span></div>
-                <div class="mt-1 text-sm text-emerald-50">${escapeHtml(seniorLabel)}</div>
-              </div>
-            </div>
-
-            <div class="mt-4 rounded-3xl border border-emerald-900 bg-emerald-950/25 p-4">
-              <div class="text-sm font-semibold">年度戰績</div>
-              <div class="mt-3 grid grid-cols-2 gap-3">
-                ${stats.map(([k,v])=>`
-                  <div class="rounded-2xl bg-emerald-950/35 border border-emerald-900 p-4">
-                    <div class="text-xs text-emerald-200/70">${escapeHtml(k)}</div>
-                    <div class="mt-2 text-xl font-bold">${escapeHtml(v ?? "—")}</div>
-                  </div>
-                `).join("")}
-              </div>
-            </div>
-
-            <div class="mt-4 rounded-3xl border border-emerald-900 bg-emerald-950/25 p-4">
-              <div class="text-sm font-semibold">健身費</div>
-              <div class="mt-3 grid grid-cols-2 gap-3">
-                ${fees.map(([k,v])=>`
-                  <div class="rounded-2xl bg-emerald-950/35 border border-emerald-900 p-4">
-                    <div class="text-xs text-emerald-200/70">${escapeHtml(k)}</div>
-                    <div class="mt-2 text-xl font-bold">${escapeHtml(v ?? "—")}</div>
-                  </div>
-                `).join("")}
-              </div>
-            </div>
-
-            <div class="mt-4 text-xs text-emerald-200/60">
-              不顯示：PIN、入會時間、繳費、別名（依你的規則）。
-            </div>
-          </div>
-        `;
-      }catch(err){
-        $("routeOutlet").innerHTML = pageWrapper(
-          "會員戰績表",
-          "讀取失敗",
-          `<div class="text-sm text-rose-200">無法取得會員資料：${escapeHtml(String(err.message||err))}</div>`
-        );
-      }
-    }
-
-
-    const routes = {
-      "/home": routeHome,
-      "/members": routeMembers,
-      "/monthly": routeMonthly,
-      "/annual": routeAnnual,
-      "/finance": routeFinance,
-    };
-
-    async function router(){
-      const hash = (window.location.hash || "#/home").replace("#","");
-      const path = hash.startsWith("/") ? hash : "/home";
-
-      if (path.startsWith("/member/")){
-        const memberName = decodeURIComponent(path.slice("/member/".length));
-        await routeMemberDetail(memberName);
-      } else {
-        const fn = routes[path] || routeHome;
-        await fn();
-      }
-      // highlight nav
-      document.querySelectorAll(".navitem").forEach(a=>{
-        const href = (a.getAttribute("href")||"").replace("#","");
-        if (href === path) a.classList.add("bg-slate-900");
-        else a.classList.remove("bg-slate-900");
-      });
-    }
-
-    // ---------- Login flow ----------
-    async function tryAutoLogin(){
-      const { team, name } = getSession();
-      if (!team || !name) return false;
-
-      try{
-        const json = await apiGet({ action:"login", team, name });
-        if (!json.ok) return false;
-        renderShellLoggedIn(name);
-        return true;
-      }catch{
-        return false;
-      }
-    }
-
-    async function login(){
-      const team = $("teamPwd").value.trim();
-      const name = $("memberName").value.trim();
-      if (!team) return toastError("請輸入球隊密碼");
-      if (!name) return toastError("請輸入姓名");
-
-      try{
-        const json = await apiGet({ action:"login", team, name });
-        if (!json.ok){
-          if (json.error === "bad_password") return toastError("球隊密碼不正確");
-          if (json.error === "name_not_found") return toastError("此姓名不在會員總表內");
-          return toastError("登入失敗：" + (json.error || "unknown"));
-        }
-        setSession(team, name);
-        renderShellLoggedIn(name);
-        window.location.hash = "#/home";
-        await router();
-      }catch(err){
-        toastError("登入失敗：請檢查 API 設定是否正確");
-      }
-    }
-
-    // ---------- Events ----------
-    $("btnLogin").addEventListener("click", login);
-    $("memberName").addEventListener("keydown", (e)=>{ if (e.key === "Enter") login(); });
-    $("teamPwd").addEventListener("keydown", (e)=>{ if (e.key === "Enter") $("memberName").focus(); });
-
-    $("btnLogout").addEventListener("click", ()=>{
-      clearSession();
-      renderShellLoggedOut();
-    });
-
-    window.addEventListener("hashchange", router);
-
-    // ---------- Boot ----------
-    (async function boot(){
-      const ok = await tryAutoLogin();
-      if (ok){
-        await router();
-      }else{
-        renderShellLoggedOut();
-      }
-
-      // Register service worker (PWA)
-      if ("serviceWorker" in navigator) {
-        try { await navigator.serviceWorker.register("./service-worker.js"); } catch {}
-      }
-    })();
-  </script>
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./service-worker.js').then(reg => {
-    reg.update();
-  });
+  }
+  document.querySelectorAll('.month-btn').forEach(btn => btn.addEventListener('click', ()=>loadMonth(btn.dataset.m)));
+  const now = new Date();
+  loadMonth(now.getMonth()+1);
 }
+
+function numOrNull(x){
+  const s = String(x ?? '').replace(/,/g,'').trim();
+  if(!s) return null;
+  const n = Number(s);
+  return Number.isFinite(n) ? n : null;
+}
+function pickFinanceSummary(financeTable){
+  if(!financeTable || financeTable.length < 2) return {monthLabel:'', balance:null};
+  const header = financeTable[0];
+  const firstCol = financeTable.map(r => String(r[0] || '').trim());
+  const idx = firstCol.findIndex(v => v === '結餘');
+  if(idx === -1) return {monthLabel:'', balance:null};
+  const row = financeTable[idx];
+  for(let c=row.length-1;c>=1;c--){
+    const n = numOrNull(row[c]);
+    if(n !== null) return {monthLabel: header[c] || '', balance:n};
+  }
+  return {monthLabel:'', balance:null};
+}
+function matrixTable(values){
+  if(!values || !values.length) return '<div class="text-white/70">（沒有資料）</div>';
+  let html = '<div class="table-box hscroll"><table><thead><tr>';
+  values[0].forEach(h => html += `<th>${escapeHtml(h)}</th>`);
+  html += '</tr></thead><tbody>';
+  values.slice(1).forEach(r=>{
+    html += '<tr>';
+    r.forEach(c => html += `<td>${escapeHtml(c)}</td>`);
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+  return html;
+}
+async function routeFinance(){
+  setNavActive('/finance');
+  const { team } = getSession();
+  $('routeOutlet').innerHTML = pageSection('快樂財經閣','',`<div class="text-white/80">讀取中...</div>`);
+  try{
+    const json = await apiGet({ action:'finance', team });
+    if(!json.ok) throw new Error(json.error || 'unknown');
+    const financeTable = json.financeTable || [];
+    const ballBalance = json.ballBalance;
+    const sum = pickFinanceSummary(financeTable);
+    $('routeOutlet').innerHTML = pageSection('快樂財經閣','',`
+      <div class="finance-grid">
+        <div class="finance-card">
+          <div class="stat-title">球隊費用結餘</div>
+          <div class="stat-value">${sum.balance == null ? '—' : Number(sum.balance).toLocaleString('zh-TW')}</div>
+        </div>
+        <div class="finance-card">
+          <div class="stat-title">隊球顆數結餘</div>
+          <div class="stat-value">${ballBalance == null ? '—' : Number(ballBalance).toLocaleString('zh-TW')}</div>
+        </div>
+      </div>
+      <div class="finance-card mt-3">
+        <div class="stat-title">財務報表</div>
+        <div class="mt-3">${matrixTable(financeTable)}</div>
+      </div>
+      <div class="finance-card mt-3">
+        <div class="stat-title">球隊規則</div>
+        <div class="mt-3 subtext">依球隊公告與參數設定內容為準。若有疑問，請洽總幹事。</div>
+      </div>
+    `);
+  }catch(err){
+    $('routeOutlet').innerHTML = pageSection('快樂財經閣','',`<div class="text-rose-300">${escapeHtml(String(err.message||err))}</div>`);
+  }
+}
+
+async function routeAnnual(){
+  setNavActive('/annual');
+  $('routeOutlet').innerHTML = pageSection('年度風雲錄','',`
+    <div class="panel p-8 text-center">
+      <div class="section-title">開發中....</div>
+      <div class="section-subtitle mt-3">敬請期待....</div>
+    </div>
+  `);
+}
+
+async function routeMemberDetail(memberName){
+  setNavActive('/home');
+  const { team } = getSession();
+  $('routeOutlet').innerHTML = pageSection('會員戰績表','',`<div class="text-white/80">讀取中...</div>`);
+  try{
+    const [memberRes, membersRes] = await Promise.all([
+      apiGet({ action:'member', team, name: memberName }),
+      apiGet({ action:'members', team })
+    ]);
+    if(!memberRes.ok) throw new Error(memberRes.error || 'unknown');
+    const m = memberRes.member || {};
+    const members = membersRes.ok ? (membersRes.members || []) : [];
+    const held = m['舉辦場次'] || m['舉辦場數'] || m['舉辦'] || (members[0] && (members[0]['舉辦場次'] || members[0]['舉辦場數'])) || '-';
+    const isSenior = String(m['樂齡']||'').trim().toUpperCase()==='Y';
+    const lineClass = isSenior ? 'senior' : '';
+    const haha = m['哈哈獎'] || '';
+    $('routeOutlet').innerHTML = `
+      <div class="detail-wrap ${lineClass}">
+        <div class="detail-name">${escapeHtml(m['姓名'] || memberName)}</div>
+
+        <div class="card-grid-2 mt-4">
+          <div class="stat-card">
+            <div class="stat-title">最新差點</div>
+            <div class="stat-value">${escapeHtml(m['最新差點'] || '—')}</div>
+            <div class="stat-title mt-3">初始差點</div>
+            <div class="stat-value small-value">${escapeHtml(m['初始差點'] || '—')}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-title">基本資料</div>
+            <div class="subtext mt-3">性別：${escapeHtml(m['性別'] || '—')}</div>
+            <div class="subtext mt-2">樂齡/一般：${isSenior ? '樂齡' : '一般'}</div>
+            <div class="subtext mt-2">會員/新人：<span class="gold">${escapeHtml(m['身份'] || '會員')}</span></div>
+          </div>
+        </div>
+
+        <div class="stat-card mt-4">
+          <div class="stat-title mb-3">年度戰果</div>
+          <div class="card-grid-3">
+            <div class="stat-card"><div class="stat-title">參賽場數</div><div class="stat-value small-value">${escapeHtml(m['參賽'] || '0')} / ${escapeHtml(held)}</div></div>
+            <div class="stat-card"><div class="stat-title">年度積分</div><div class="stat-value small-value">${escapeHtml(m['年度積分'] || '0')}</div></div>
+            <div class="stat-card"><div class="stat-title">哈哈獎</div><div class="stat-value small-value">${escapeHtml(haha)}</div></div>
+            <div class="stat-card"><div class="stat-title">遠距獎</div><div class="stat-value small-value">${escapeHtml(m['遠距獎'] || '0')}</div></div>
+            <div class="stat-card"><div class="stat-title">獵鷹次數</div><div class="stat-value small-value">${escapeHtml(m['獵鷹'] || '0')}</div></div>
+            <div class="stat-card"><div class="stat-title">抓鳥次數</div><div class="stat-value small-value">${escapeHtml(m['抓鳥'] || '0')}</div></div>
+          </div>
+        </div>
+
+        <div class="stat-card mt-4">
+          <div class="stat-title mb-3">健身費/贊助</div>
+          <div class="card-grid-3">
+            <div class="stat-card"><div class="stat-title">累計健身費</div><div class="stat-value small-value">${escapeHtml(m['累計健身費'] || '0')}</div></div>
+            <div class="stat-card"><div class="stat-title">總繳健身費</div><div class="stat-value small-value">${escapeHtml(m['總繳健身費'] || '0')}</div></div>
+            <div class="stat-card"><div class="stat-title">贊助總額</div><div class="stat-value small-value">${escapeHtml(m['贊助總額'] || '0')}</div></div>
+          </div>
+        </div>
+
+        <div class="stat-card mt-4">
+          <div class="stat-title">月例賽戰績</div>
+          <div class="subtext mt-4" style="min-height:90px"></div>
+        </div>
+      </div>
+    `;
+  }catch(err){
+    $('routeOutlet').innerHTML = pageSection('會員戰績表','',`<div class="text-rose-300">${escapeHtml(String(err.message||err))}</div>`);
+  }
+}
+
+const routes = {
+  '/home': routeHome,
+  '/members': routeMembers,
+  '/monthly': routeMonthly,
+  '/finance': routeFinance,
+  '/annual': routeAnnual,
+};
+
+async function router(){
+  const { team, name } = getSession();
+  if(!team || !name){
+    renderShellLoggedOut();
+    return;
+  }
+  renderShellLoggedIn(name);
+  const hash = location.hash.replace(/^#/,'') || '/home';
+  if(hash.startsWith('/member/')){
+    const memberName = decodeURIComponent(hash.slice('/member/'.length));
+    await routeMemberDetail(memberName);
+    return;
+  }
+  const fn = routes[hash] || routeHome;
+  await fn();
+}
+
+$('btnLogin').addEventListener('click', async ()=>{
+  const team = ($('teamPwd').value || '').trim();
+  const name = ($('memberName').value || '').trim();
+  if(!team || !name){
+    $('loginMsg').textContent = '請輸入球隊密碼與姓名';
+    show($('loginMsg'));
+    return;
+  }
+  show($('loginMsg'));
+  $('loginMsg').textContent = '';
+  setLoading($('btnLogin'), true, '登入中...');
+  try{
+    const json = await apiGet({ action:'login', team, name });
+    if(!json.ok){
+      throw new Error(json.error || '登入失敗');
+    }
+    setSession(team, name);
+    window.location.hash = '#/home';
+    await router();
+  }catch(err){
+    $('loginMsg').textContent = '登入失敗：' + String(err.message || err);
+    show($('loginMsg'));
+  }finally{
+    setLoading($('btnLogin'), false);
+  }
+});
+
+$('btnLogout').addEventListener('click', ()=>{
+  clearSession();
+  renderShellLoggedOut();
+});
+
+window.addEventListener('hashchange', router);
+window.addEventListener('load', async ()=>{
+  if('serviceWorker' in navigator){
+    try{ await navigator.serviceWorker.register('./service-worker.js'); }catch(e){}
+  }
+  router();
+});
 </script>
 </body>
 </html>
