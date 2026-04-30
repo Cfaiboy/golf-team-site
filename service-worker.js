@@ -1,4 +1,4 @@
-const CACHE_NAME = "golf-pwa-ui-v2-1-1-lite";
+const CACHE_NAME = "golf-pwa-ui-v2-1-2-lite";
 const STATIC_ASSETS = [
   "./manifest.json",
   "./icons/icon-192.png",
