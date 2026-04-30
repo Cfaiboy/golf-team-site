@@ -177,6 +177,22 @@
       z-index:8;
       color:var(--gold);
     }
+    .member-card,
+    .stat-card,
+    .match-card,
+    .nav-item {
+      transition: transform 0.12s ease, filter 0.12s ease;
+    }
+    .member-card:active,
+    .stat-card:active,
+    .match-card:active,
+    .nav-item:active {
+      transform: scale(0.97);
+      filter: brightness(1.1);
+    }
+    .member-card:active {
+      transform: scale(0.96);
+    }
 
   </style>
 </head>
@@ -501,8 +517,24 @@ async function routeMonthly(){
   }
   document.querySelectorAll('.month-btn').forEach(btn => btn.addEventListener('click', ()=>loadMonth(btn.dataset.m)));
   const now = new Date();
-  loadMonth(now.getMonth()+1);
-}
+  let currentMonth = new Date().getMonth()+1;
+
+  document.addEventListener('touchstart', e=>{
+    window.startX = e.touches[0].clientX;
+  });
+
+  document.addEventListener('touchend', e=>{
+    const dx = e.changedTouches[0].clientX - window.startX;
+    if(Math.abs(dx) < 60) return;
+
+    if(dx < 0 && currentMonth < 12) currentMonth++;
+    if(dx > 0 && currentMonth > 1) currentMonth--;
+
+    loadMonth(currentMonth);
+  });
+
+  loadMonth(currentMonth);
+  }
 
 function numOrNull(x){
   const s = String(x ?? '').replace(/,/g,'').trim();
@@ -661,8 +693,15 @@ async function routeMemberDetail(memberName){
 
         <div class="stat-card mt-4">
           <div class="stat-title">月例賽戰績</div>
-          <div class="subtext mt-4" style="min-height:90px"></div>
-        </div>
+          ${[...Array(12)].map((_,i)=>{
+            const mth = i+1;
+            const g = m[`${mth}月總桿`] || '';
+            const n = m[`${mth}月淨桿`] || '';
+            const r = m[`${mth}月名次`] || '';
+            if(!g && !n && !r) return '';
+            return `<div class="subtext">${mth}月：${g} / ${n} / ${r}</div>`;
+           }).join('')}
+         </div>
       </div>
     `;
   }catch(err){
