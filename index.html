@@ -393,17 +393,17 @@ async function routeMembers(){
     const json = await apiGet({ action:'members', team });
     if(!json.ok) throw new Error(json.error || 'unknown');
     const members = (json.members || [])
-     .filter(x => {
-       const name = String(x['姓名'] || '').trim();
-       const identity = String(x['身份'] || '').trim();
+  .filter(x => String(x['姓名']||'').trim())
+  .sort((a,b)=>{
+    const pa = Number(a['年度積分'] || 0);
+    const pb = Number(b['年度積分'] || 0);
 
-       if (!name) return false;
-       if (name.startsWith('會員')) return false;
-       if (!identity) return false;
+    // 先比積分（高 → 低）
+    if (pb !== pa) return pb - pa;
 
-       return true;
-      })
-     .sort((a,b)=>String(a['姓名']||'').localeCompare(String(b['姓名']||''),'zh-Hant'));
+    // 同分再用姓名排序（避免亂跳）
+    return String(a['姓名']||'').localeCompare(String(b['姓名']||''),'zh-Hant');
+  });
     grid.innerHTML = members.map(m => {
       const senior = String(m['最新樂齡'] || m['樂齡'] || '').trim().toUpperCase()==='Y';
       const cardClass = senior ? 'green' : 'blue';
