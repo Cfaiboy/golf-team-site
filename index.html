@@ -640,7 +640,7 @@ async function routeAnnual(){
 
     const awardsHtml = order.map(k=>{
       const it = a[k] || {};
-      if(!String(it.name || it.score || '').trim()) return '';
+      if(k !== 'special' && !String(it.name || it.score || '').trim()) return '';
       return `
         <div class="annual-award">
           <div class="annual-label">${escapeHtml(it.label || '')}</div>
