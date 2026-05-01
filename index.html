@@ -206,6 +206,36 @@
     .annual-name{color:#fff;font-weight:800;flex:1;text-align:center}
     .annual-score{color:var(--gold);font-weight:900;min-width:44px;text-align:right}
 
+    .rule-box {
+      max-height: 60vh;
+      overflow-y: auto;
+      margin-top: 12px;
+      padding: 14px;
+      border: 1.5px solid #57ff2f;
+      border-radius: 14px;
+      background: rgba(0,0,0,.10);
+      font-size: 13px;
+      line-height: 1.65;
+      color: rgba(255,255,255,.92);
+    }
+
+    .rule-title {
+      color: #FFD700;
+      font-weight: 900;
+      font-size: 15px;
+      margin: 12px 0 6px;
+    }
+
+    .rule-subtitle {
+      color: #FFD700;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    .rule-box p {
+      margin: 4px 0;
+    }
+
   </style>
 </head>
 <body>
@@ -617,9 +647,105 @@ async function routeFinance(){
         <div class="mt-3">${matrixTable(financeTable)}</div>
       </div>
       <div class="finance-card mt-3">
-        <div class="stat-title">球隊規則</div>
-        <div class="mt-3 subtext">依球隊公告與參數設定內容為準。若有疑問，請洽總幹事。</div>
-      </div>
+<div class="stat-title">球隊規則</div>
+
+<div class="rule-box">
+  <div class="rule-title">工研院快樂隊規則 2026</div>
+
+  <div class="rule-title">1. 會員</div>
+
+  <div class="rule-subtitle">資格</div>
+  <p>歡迎工研院之同仁或院友或有興趣高爾夫運動，遵守高爾夫規則，發揮高爾夫精神的球友。</p>
+  <p>70歲或以上得為樂齡會員。</p>
+
+  <div class="rule-subtitle">會費</div>
+  <p>每年初由會長決定，中途加入以相對比例計算。</p>
+  <p>2026年費為 $8000，眷屬享 8 折優惠。</p>
+
+  <div class="rule-subtitle">差點</div>
+  <p>新會員以加入前後參加之前三場月例賽之差點平均作為個人初始差點，並從第三場月例賽開始計算成績。</p>
+  <p>之後每個月及每年依照規則調整差點。</p>
+  <p>舊會員回歸：若三年內得以之前之差點開始計算；若超過三年，則依新會員差點計算規定。</p>
+
+  <div class="rule-title">2. 月例賽</div>
+
+  <p>淨桿 = 總桿 − 最新差點。</p>
+  <p>淨桿以小數點後一位為準，後二位四捨五入。</p>
+  <p>依狀況提供每位參賽會員或來賓點心一份。賽後餐廳一起用餐並頒獎。</p>
+
+  <div class="rule-subtitle">排名</div>
+  <p>淨桿由低至高排名。</p>
+  <p>同桿以差點低者勝出；同桿同差點以女生勝出；同桿同差點同性別以樂齡勝出。</p>
+
+  <div class="rule-subtitle">獎金及獎品</div>
+  <p>淨桿第 1、2、3 名獎金：$2000 / $1500 / $1000。</p>
+  <p>淨桿第 7 名 L7：隊球一顆。</p>
+  <p>淨桿倒數第 2 名 BB：飯桶簽名，獎品為隊球一顆。</p>
+  <p>Birdie 獎品：隊球一顆。Eagle 獎品：隊球一條。</p>
+  <p>技術獎：近洞 x4、二近 x2、遠距 x2，各獎隊球一顆。</p>
+  <p>近洞並 Birdie：隊球一顆；連同近洞與 Birdie 共 3 顆。</p>
+  <p>近洞並 Boggy 處罰：$100。</p>
+  <p>即興獎項由會長決定。</p>
+  <p>參賽未獲得任何獎項者，可獲得哈哈獎 $200。</p>
+  <p>每位會員當年度僅能獲得最多 2 次遠距獎。</p>
+
+  <div class="rule-subtitle">健身費（球隊收入）</div>
+  <p>以 L7 淨桿或 75 桿高者為基準桿。</p>
+  <p>參賽者淨桿 − 基準桿 ≥ 1 者，小數點以下無條件捨去。</p>
+  <p>每桿繳 $50，樂齡每桿繳 $25。</p>
+  <p>當月健身費最高 $300，樂齡最高 $150。</p>
+  <p>繳交當月最高健身費者，次月差點增加 1 桿，並將累計健身費歸零。</p>
+  <p>累計健身費達 $1000，次月差點增加 1 桿，12 月除外，並將累計健身費歸零。</p>
+  <p>累計健身費每年年底自動清除歸零，下一年度重新計算。</p>
+
+  <div class="rule-subtitle">差點調整</div>
+  <p>以小數點後一位為準，後二位四捨五入。</p>
+  <p>淨桿第 1 名：原差點 −（原差點 × 15% + 低於 72 淨桿數 / 2）。</p>
+  <p>淨桿第 2 名：原差點 −（原差點 × 10% + 低於 72 淨桿數 / 2）。</p>
+  <p>淨桿第 3 名：原差點 −（原差點 × 5% + 低於 72 淨桿數 / 2）。</p>
+  <p>調桿時，男生最高 29；男生且樂齡最高 36；女生最高 36。</p>
+
+  <div class="rule-title">3. 年度積分</div>
+
+  <div class="rule-subtitle">得分</div>
+  <p>每次月例賽前 1 至 10 名得分：28 / 24 / 18 / 15 / 12 / 10 / 9 / 8 / 7 / 6。</p>
+  <p>每次月例賽第 11 名後皆為 5 分。</p>
+
+  <div class="rule-subtitle">年度差點調整</div>
+  <p>當年度會員出賽未達總數一半，不列入調整。</p>
+  <p>新人以當年度有正式計算成績之出賽為準。</p>
+  <p>年底差點 A：12 月例賽後調整完之差點。</p>
+  <p>年度平均差點 B：整年參加例賽平均總桿之差點。</p>
+  <p>C：年底差點 A 的 1.2 倍。</p>
+  <p>A > B，差點以 A 計算。</p>
+  <p>A < B 且 B < C，差點以 B 計算。</p>
+  <p>A < B 且 B > C，差點以 C 計算。</p>
+  <p>調桿時，男生最高 29；男生且樂齡最高 36；女生最高 36。</p>
+
+  <div class="rule-title">4. 會長盃年終賽</div>
+
+  <p>會長盃年終賽可安排同 12 月月例賽，賽後由會長請客用餐。</p>
+  <p>獎項、獎品及規則最終由會長決定。</p>
+  <p>冠軍：年度積分第 1 名。</p>
+  <p>亞軍：年度積分第 2 名。</p>
+  <p>季軍：年度積分第 3 名。</p>
+  <p>L7：年度積分第 7 名。</p>
+  <p>BB：年度積分倒數第 2 名。</p>
+  <p>全勤獎：每次月例賽皆有參加出席。</p>
+  <p>最佳進步獎：年度差點進步最多。</p>
+  <p>最佳新人獎：新人年度積分最高。</p>
+  <p>最佳貢獻獎：健身費及贊助金最多。</p>
+  <p>其他贊助。</p>
+
+  <div class="rule-title">5. 其他</div>
+
+  <p>報名後，若未能同時參加，必須提早或延後之會員，必須同一天同一球場。</p>
+  <p>可計算 18 洞成績、全勤、Birdie 及健身費，但無法計算技術獎及前三名。</p>
+  <p>來賓用餐，每位酌收 $500 餐費。</p>
+  <p>協助安排借票原則上不安排；若有安排，3 人 / 2 人差價，或會員同組 / 不同組差價，由球隊採平均費用計算，多退少補。</p>
+  <p>若遇球場非 18 洞且需多邊開球，單邊 9 洞皆會有技術獎，包括近洞、二近、遠距，以確保會員權益。</p>
+</div>      
+</div>
     `);
   }catch(err){
     $('routeOutlet').innerHTML = pageSection('快樂財經閣','',`<div class="text-rose-300">${escapeHtml(String(err.message||err))}</div>`);
